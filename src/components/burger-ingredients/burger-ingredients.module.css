@@ -1,0 +1,14 @@
+section{
+    max-width: 600px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.scroll_container {
+    height: 730px;
+    overflow: auto;
+}
