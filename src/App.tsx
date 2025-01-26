@@ -1,4 +1,4 @@
-// import './App.css'
+import styles from './app.module.css';
 
 import AppHeader from "./components/app-header/AppHeader.tsx";
 import BurgerIngredients from "./components/burger-ingredients/BurgerIngredients.tsx";
@@ -52,7 +52,13 @@ function App() {
 
     React.useEffect(() => {
         const req = async () => await fetch(URL)
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return Promise.reject(`Ошибка ${res.statusText}`);
+                }
+            })
             .then(data => setData(data.data))
             .catch(err => console.log(err));
 
@@ -113,7 +119,7 @@ function App() {
   return (
       <>
           <AppHeader/>
-          <div style={{maxWidth: '1240px', display:'flex', margin: 'auto'}}>
+          <div className={styles.content_container}>
               <BurgerIngredients
                   data={data} selected={selected} onClick={openIngredientModal}
               />

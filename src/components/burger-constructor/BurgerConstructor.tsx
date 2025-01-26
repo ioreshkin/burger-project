@@ -72,7 +72,7 @@ const BurgerConstructor = ({data, selected, setModal} : MyComponentProps) => {
             </div>
             <div className={`${styles.scroll_container} custom-scroll`}>
                 {filling.map(ingredient => {
-                    return <div className={styles.container}>
+                    return <div className={styles.container} key={ingredient._id}>
                         <DragIcon type="primary" className={styles.drag}/>
                         <ConstructorElement
                             text={ingredient.name}

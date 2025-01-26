@@ -70,7 +70,7 @@ const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
                 <div className={styles.container}>
                     {buns.map(item => {
                         return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
                         />
                     })}
                 </div>
@@ -80,7 +80,7 @@ const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
                 <div className={styles.container}>
                     {sauces.map(item => {
                         return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
                         />
                     })}
                 </div>
@@ -90,7 +90,7 @@ const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
                 <div className={styles.container}>
                     {mains.map(item => {
                         return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
                         />
                     })}
                 </div>

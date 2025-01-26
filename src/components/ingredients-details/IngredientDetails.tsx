@@ -9,7 +9,7 @@ const IngredientDetails = ({ingredient} : MyComponentProps) => {
     return (
         <div className={styles.container}>
             <p className="text text_type_main-large mr-10 ml-10 mt-10">Детали ингредиента</p>
-            <img src={ingredient.image_large} alt=""/>
+            <img src={ingredient.image_large} alt={ingredient.name}/>
             <p className="text text_type_main-medium mt-4 mb-8" style={{textAlign: 'center'}}>{ingredient.name}</p>
             <div className={`${styles.nutritional_container} mb-15`}>
                 <div>
