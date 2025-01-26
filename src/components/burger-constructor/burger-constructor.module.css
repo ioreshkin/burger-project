@@ -4,6 +4,11 @@ section {
 
 .container {
     display: flex;
+    width: 536px;
+}
+
+.external_container {
+    display: flex;
 }
 
 .drag {

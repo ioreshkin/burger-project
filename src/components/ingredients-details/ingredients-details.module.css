@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.nutritional_container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
+}
+
+.nutritional_container p {
+    text-align: center;
+    display: block;
+}

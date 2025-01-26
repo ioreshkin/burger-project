@@ -1,19 +1,23 @@
 import styles from './burger-ingredients.module.css';
-import React, {useEffect} from "react";
+import React from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import result from "../../../utils/data.ts";
 import BurgerIngredientsItem, {IIngredient} from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
+import {selected} from "../../App.tsx";
 
-const BurgerIngredients = () => {
+interface MyComponentProps {
+    data: IIngredient[];
+    selected: selected;
+    onClick: (ingredient: IIngredient) => void;
+}
+
+const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
     const [current, setCurrent] = React.useState('one');
     const [buns, setBuns] = React.useState<IIngredient[]>([]);
     const [mains, setMains] = React.useState<IIngredient[]>([]);
     const [sauces, setSauces] = React.useState<IIngredient[]>([]);
 
 
-
-    useEffect(() => {
-        const data : IIngredient[] = result;
+    React.useEffect(() => {
         const newBuns = [] as IIngredient[];
         const newMains = [] as IIngredient[];
         const newSauces = [] as IIngredient[];
@@ -35,7 +39,14 @@ const BurgerIngredients = () => {
         setBuns(newBuns);
         setMains(newMains);
         setSauces(newSauces);
-    }, [])
+    }, [data])
+
+    const findCount = (id: string) => {
+        let count = 0;
+        if (id === selected.bun) count += 2;
+        count += selected.filling.filter(item => item.id === id).length;
+        return count;
+    }
 
     return (
         <section className="mr-10">
@@ -58,7 +69,9 @@ const BurgerIngredients = () => {
 
                 <div className={styles.container}>
                     {buns.map(item => {
-                        return <BurgerIngredientsItem ingredient={item}/>
+                        return <BurgerIngredientsItem
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                        />
                     })}
                 </div>
 
@@ -66,7 +79,9 @@ const BurgerIngredients = () => {
 
                 <div className={styles.container}>
                     {sauces.map(item => {
-                        return <BurgerIngredientsItem ingredient={item}/>
+                        return <BurgerIngredientsItem
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                        />
                     })}
                 </div>
 
@@ -74,7 +89,9 @@ const BurgerIngredients = () => {
 
                 <div className={styles.container}>
                     {mains.map(item => {
-                        return <BurgerIngredientsItem ingredient={item}/>
+                        return <BurgerIngredientsItem
+                            ingredient={item} count={findCount(item._id)} onClick = {onClick}
+                        />
                     })}
                 </div>
             </div>
