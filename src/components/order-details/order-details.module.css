@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mark_img {
+    width: 120px;
+    height: 120px;
+}
+
+.neon {
+    text-shadow: #1212b5 0px 0px 20px;
+}

@@ -1,0 +1,37 @@
+header {
+    position: sticky;
+    top: 0;
+    background-color: #1C1C21;
+    z-index: 1000;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    max-width: 1240px;
+    margin: auto;
+}
+
+p {
+    display: inline;
+}
+
+.container {
+    display: flex;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo {
+    margin: auto;
+    cursor: pointer;
+}
+
+.profile {
+    margin-left: auto;
+}
