@@ -1,59 +1,63 @@
 import styles from './burger-constructor.module.css';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IIngredient} from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import { selected } from '../../App.tsx';
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../services/store.ts";
+import {fetchOrder} from "../../services/orderSlice.ts";
+import { useDrop} from "react-dnd";
+import { IIngredient} from "../../../utils/types.ts";
+import {addFilling, reset, setBun} from "../../services/burgerConstructorSlice.ts";
+import BurgerConstructorDraggableItem from "../burger-constructor-draggable-item/BurgerConstructorDraggableItem.tsx";
 
-
-interface MyComponentProps {
-    data: IIngredient[];
-    selected: selected;
-    setModal: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const BurgerConstructor = ({data, selected, setModal} : MyComponentProps) => {
-
-    const [bun, setBun] = React.useState<IIngredient>();
-
-    const [filling, setFilling] = React.useState<IIngredient[]>([]);
+const BurgerConstructor = () => {
+    const { bun, filling } = useSelector((state:RootState) => state.burgerConstructor);
 
     const [cost, setCost] = React.useState(0);
 
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [, drop] = useDrop(() => ({
+        accept: 'ingredient',
+        drop: (item: IIngredient) => {
+            if (item.type === "bun") {
+                dispatch(setBun(item));
+            } else {
+                dispatch(addFilling(item));
+            }
+        },
+    }));
+
     React.useEffect(() => {
         let newCost = 0;
-        if (data.length > 0) {
-            if (selected.bun !== '') {
-                const bun = data.filter(item => {
-                    if (item._id === selected.bun) return item;
-                });
-                if (bun) {
-                    setBun(bun[0]);
-                    newCost += bun[0].price * 2;
-                }
-            }
 
-            if (selected.filling.length > 0) {
-               const newFilling : IIngredient[] = [];
+        newCost += bun.price * 2;
 
-                selected.filling.map(fillingItem => {
-                    data.map(dataItem => {
-                        if (dataItem._id === fillingItem.id) {
-                            newFilling.push(dataItem);
-                            newCost += dataItem.price;
-                        }
-                    })
-                });
-                setFilling(newFilling);
-                setCost(newCost);
-            }
+        filling.map(item => newCost += item.price);
+
+        setCost(newCost);
+
+    }, [bun, filling])
+
+    const handleClick = async () => {
+        const ids = [];
+        ids.push(bun._id);
+        filling.map(item => ids.push(item._id));
+        ids.push(bun._id);
+
+        const req = {
+            ingredients: ids,
         }
 
-    }, [data, selected]);
+        const resultAction = await dispatch(fetchOrder(req)).unwrap();
+
+        if (resultAction.success) dispatch(reset());
+    }
 
     return (
-        <section className="mt-25 pr-4 pl-4">
+        <section className="mt-25 pr-4 pl-4" ref={drop} >
             <div className={`${styles.external_container} mb-4 pr-8`}>
-                {bun === undefined ? <ConstructorElement
+                {bun._id === '' ? <ConstructorElement
                     type="top"
                     isLocked={true}
                     text="Выберите булку для бургера"
@@ -71,28 +75,13 @@ const BurgerConstructor = ({data, selected, setModal} : MyComponentProps) => {
 
             </div>
             <div className={`${styles.scroll_container} custom-scroll`}>
-                {filling.map(ingredient => {
-                    return <div className={styles.container} key={ingredient._id}>
-                        <DragIcon type="primary" className={styles.drag}/>
-                        <ConstructorElement
-                            text={ingredient.name}
-                            price={ingredient.price}
-                            thumbnail={ingredient.image}
-                            extraClass="ml-3 pr-2"
-                        />
-                    </div>
+                {filling.map((ingredient, index) => {
+                    return <BurgerConstructorDraggableItem ingredient={ingredient} index={index} key={index} />
                 })}
             </div>
 
             <div className={`${styles.external_container} mt-4 mb-10 pr-8`}>
-                {bun === undefined ? <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text="Выберите булку для бургера"
-                    price={0}
-                    thumbnail=""
-                    extraClass="ml-8 pr-6"
-                /> : <ConstructorElement
+                {bun._id === '' ? null : <ConstructorElement
                     type="bottom"
                     isLocked={true}
                     text={bun.name + " (низ)"}
@@ -106,7 +95,7 @@ const BurgerConstructor = ({data, selected, setModal} : MyComponentProps) => {
                     <p className="text text_type_digits-medium">{cost}</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="large" onClick={() => setModal('order')}>
+                <Button htmlType="button" type="primary" size="large" onClick={handleClick}>
                     Оформить заказ
                 </Button>
             </div>

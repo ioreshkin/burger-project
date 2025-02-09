@@ -1,50 +1,80 @@
 import styles from './burger-ingredients.module.css';
-import React from "react";
+import React, {SyntheticEvent} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngredientsItem, {IIngredient} from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
-import {selected} from "../../App.tsx";
+import BurgerIngredientsItem from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
+import {IIngredient} from "../../../utils/types.ts";
+import {useSelector} from "react-redux";
+import {RootState} from "../../services/store.ts";
 
-interface MyComponentProps {
-    data: IIngredient[];
-    selected: selected;
-    onClick: (ingredient: IIngredient) => void;
-}
+// interface MyComponentProps {
+//     data: IIngredient[];
+//     selected: selected;
+//     onClick: (ingredient: IIngredient) => void;
+// }
 
-const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
+const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('one');
     const [buns, setBuns] = React.useState<IIngredient[]>([]);
     const [mains, setMains] = React.useState<IIngredient[]>([]);
     const [sauces, setSauces] = React.useState<IIngredient[]>([]);
 
+    const { items, status, error} = useSelector((state:RootState) => state.ingredients);
+    const { bun, filling } = useSelector((state:RootState) => state.burgerConstructor);
+
+
 
     React.useEffect(() => {
-        const newBuns = [] as IIngredient[];
-        const newMains = [] as IIngredient[];
-        const newSauces = [] as IIngredient[];
+        if (items.length > 0) {
+            const newBuns = [] as IIngredient[];
+            const newMains = [] as IIngredient[];
+            const newSauces = [] as IIngredient[];
 
-        data.map(item => {
-            switch (item.type) {
-                case 'bun':
-                    newBuns.push(item);
-                    break;
-                case 'main':
-                    newMains.push(item);
-                    break;
-                case 'sauce':
-                    newSauces.push(item);
-                    break;
+            items?.map(item => {
+                switch (item.type) {
+                    case 'bun':
+                        newBuns.push(item);
+                        break;
+                    case 'main':
+                        newMains.push(item);
+                        break;
+                    case 'sauce':
+                        newSauces.push(item);
+                        break;
+                }
+            });
+            setBuns(newBuns);
+            setMains(newMains);
+            setSauces(newSauces);
+        }
+    }, [items])
+
+    const handleScroll = (e:SyntheticEvent<HTMLDivElement>) => {
+        const container = e.currentTarget
+        const headers = Array.from(container.querySelectorAll("h2"));
+
+        let closestHeading = 1;
+
+        let minDistance = Infinity;
+
+        for (let i = 1; i <= headers.length; i++) {
+            const newDistance = Math.abs((container.scrollTop + 252) - headers[i - 1].offsetTop);
+            if (newDistance < minDistance) {
+                closestHeading = i;
+                minDistance = newDistance;
             }
-        });
+        }
 
-        setBuns(newBuns);
-        setMains(newMains);
-        setSauces(newSauces);
-    }, [data])
+        switch (closestHeading) {
+            case 1: setCurrent("one"); break;
+            case 2: setCurrent("two"); break;
+            case 3: setCurrent("three"); break;
+        }
+    }
 
     const findCount = (id: string) => {
         let count = 0;
-        if (id === selected.bun) count += 2;
-        count += selected.filling.filter(item => item.id === id).length;
+        if (id === bun._id) count += 2;
+        count += filling.filter(item => item._id === id).length;
         return count;
     }
 
@@ -64,36 +94,40 @@ const BurgerIngredients = ({data, selected, onClick}: MyComponentProps) => {
                 </Tab>
             </div>
 
-            <div className={`${styles.scroll_container} custom-scroll`}>
-                <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
+            <div className={`${styles.scroll_container} custom-scroll`} onScroll={handleScroll}>
+                {status === "succeeded" ? (
+                    <>
+                        <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
 
-                <div className={styles.container}>
-                    {buns.map(item => {
-                        return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
-                        />
-                    })}
-                </div>
+                        <div className={styles.container}>
+                            {buns.map(item => {
+                                return <BurgerIngredientsItem
+                                    ingredient={item} count={findCount(item._id)} key={item._id}
+                                />
+                            })}
+                        </div>
 
-                <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+                        <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
 
-                <div className={styles.container}>
-                    {sauces.map(item => {
-                        return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
-                        />
-                    })}
-                </div>
+                        <div className={styles.container}>
+                            {sauces.map(item => {
+                                return <BurgerIngredientsItem
+                                    ingredient={item} count={findCount(item._id)} key={item._id}
+                                />
+                            })}
+                        </div>
 
-                <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+                        <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
 
-                <div className={styles.container}>
-                    {mains.map(item => {
-                        return <BurgerIngredientsItem
-                            ingredient={item} count={findCount(item._id)} onClick = {onClick} key={item._id}
-                        />
-                    })}
-                </div>
+                        <div className={styles.container}>
+                            {mains.map(item => {
+                                return <BurgerIngredientsItem
+                                    ingredient={item} count={findCount(item._id)} key={item._id}
+                                />
+                            })}
+                        </div>
+                    </>
+                ) : <>Ошибка: {error}</>}
             </div>
 
 

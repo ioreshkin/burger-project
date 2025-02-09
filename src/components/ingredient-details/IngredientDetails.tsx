@@ -1,5 +1,6 @@
 import styles from './ingredients-details.module.css';
-import {IIngredient} from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
+import {IIngredient} from "../../../utils/types.ts";
+
 
 interface MyComponentProps {
     ingredient: IIngredient;
