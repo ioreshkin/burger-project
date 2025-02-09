@@ -1,4 +1,4 @@
-import {IIngredient} from "../src/components/burger-ingredients-item/BurgerIngredientsItem.js";
+import {IIngredient} from "./types";
 
 const data : IIngredient[] =  [
     {

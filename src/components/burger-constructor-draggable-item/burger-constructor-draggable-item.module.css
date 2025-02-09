@@ -1,0 +1,18 @@
+.drag {
+    margin: auto;
+    cursor: grab;
+}
+
+.container {
+    display: flex;
+    width: 536px;
+    position: relative;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.highlight {
+    border-top: solid blue 4px;
+}

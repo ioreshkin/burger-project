@@ -3,17 +3,21 @@ import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/ModalOverlay.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../services/store.ts";
+import {reset as resetOrder} from "../../services/orderSlice.ts";
+import {reset as resetIngredientDetails} from "../../services/ingredientDetailsSlice.ts";
 
 interface MyComponentProps {
-    modal: string;
-    closeModal: () => void;
-    overlayClickHandler: (e: React. SyntheticEvent<HTMLElement>) => void;
     children: React.ReactNode;
 }
 
-const Modal = ({modal, closeModal, overlayClickHandler, children} : MyComponentProps) => {
+const Modal = ({ children} : MyComponentProps) => {
 
     const [modalRoot, setModalRoot] = React.useState<HTMLElement>();
+
+
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const root = document.getElementById('modal-root');
@@ -39,11 +43,24 @@ const Modal = ({modal, closeModal, overlayClickHandler, children} : MyComponentP
         }
     }, []);
 
-    if (modal === '') return null;
+    const closeModal = () => {
+        dispatch(resetOrder());
+        dispatch(resetIngredientDetails());
+    }
+
+    const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
+        if (!e.currentTarget.id) return;
+        if (e.currentTarget.id === 'modal-overlay') {
+            closeModal();
+        }
+        e.stopPropagation();
+    }
+
+    if (!children || (!children[0] && !children[1])) return null;
 
     return ReactDOM.createPortal(
         (
-            <ModalOverlay onClick={overlayClickHandler}>
+            <ModalOverlay onClick={handleClick}>
                 <div className={styles.container}>
                     <CloseIcon
                         type="primary" className={`${styles.close} mt-15 mr-10`} onClick={closeModal}
