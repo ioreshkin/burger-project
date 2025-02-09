@@ -29,11 +29,26 @@ const burgerConstructorSlice = createSlice({
     name: 'burgerConstructor',
     initialState,
     reducers: {
-        setBun: (state, action: PayloadAction<IIngredient>) => {
-            state.bun = {...action.payload, key: nanoid(), index: -1};
+        setBun: {
+            reducer: (state, action: PayloadAction<IConstructorIngredient>) => {
+                state.bun = action.payload;
+            },
+            prepare: (ingredient: IIngredient) => {
+                return {
+                    payload: { ...ingredient, key: nanoid(), index: initialState.bun.index },
+                };
+            },
         },
-        addFilling: (state, action: PayloadAction<IIngredient>) => {
-            state.filling.push({...action.payload, key: nanoid(), index: state.filling.length});
+
+        addFilling: {
+            reducer: (state, action: PayloadAction<IConstructorIngredient>) => {
+                state.filling.push({...action.payload, index: state.filling.length});
+            },
+            prepare: (ingredient: IIngredient) => {
+                return {
+                    payload: { ...ingredient, key: nanoid(), index: 0 },
+                };
+            },
         },
         removeFilling: (state, action: PayloadAction<string>) => {
             state.filling = state.filling.filter(filling => filling.key !== action.payload);

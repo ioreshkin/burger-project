@@ -1,7 +1,6 @@
 import {IIngredient} from "../../utils/types.ts";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-
-const URL = "https://norma.nomoreparties.space/api/ingredients";
+import {request} from "./request.ts";
 
 interface IIngredientsResponse {
     success: boolean;
@@ -12,11 +11,7 @@ export const fetchIngredients = createAsyncThunk<IIngredientsResponse>(
     "ingredients/fetchIngredients",
     async (_, { rejectWithValue }) => {
         try {
-            const res = await fetch(URL);
-            if (!res.ok) {
-                throw new Error("Ошибка при получении списка ингредиентов");
-            }
-            return await res.json();
+            return await request("ingredients");
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }

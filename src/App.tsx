@@ -12,6 +12,8 @@ import {AppDispatch, RootState} from "./services/store.ts";
 import {fetchIngredients} from "./services/ingredientsSlice.ts";
 
 import {IIngredient} from "../utils/types.ts";
+import {reset as resetOrder} from "./services/orderSlice.ts";
+import {reset as resetIngredientDetails} from "./services/ingredientDetailsSlice.ts";
 
 
 export type filling = {
@@ -36,6 +38,11 @@ function App() {
         dispatch(fetchIngredients());
     }, [dispatch]);
 
+    const onClose = () => {
+        dispatch(resetOrder());
+        dispatch(resetIngredientDetails());
+    }
+
   return (
       <>
           <AppHeader/>
@@ -43,7 +50,7 @@ function App() {
               <BurgerIngredients />
               <BurgerConstructor />
           </div>
-          <Modal >{
+          <Modal onClose={onClose}>{
               orderNum > 0 &&
               <OrderDetails/>
           }
@@ -52,7 +59,6 @@ function App() {
               <IngredientDetails ingredient={currentIngredient}/>
           }
           </Modal>
-
       </>
   )
 }

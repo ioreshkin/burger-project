@@ -3,21 +3,15 @@ import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/ModalOverlay.tsx";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../services/store.ts";
-import {reset as resetOrder} from "../../services/orderSlice.ts";
-import {reset as resetIngredientDetails} from "../../services/ingredientDetailsSlice.ts";
 
 interface MyComponentProps {
     children: React.ReactNode;
+    onClose: () => void;
 }
 
-const Modal = ({ children} : MyComponentProps) => {
+const Modal = ({ children, onClose } : MyComponentProps) => {
 
     const [modalRoot, setModalRoot] = React.useState<HTMLElement>();
-
-
-    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const root = document.getElementById('modal-root');
@@ -34,7 +28,7 @@ const Modal = ({ children} : MyComponentProps) => {
     React.useEffect(() => {
         const escapePressHandler = (e: KeyboardEvent) => {
             if (e.key === "Escape" || e.code === "Escape") {
-                closeModal();
+                onClose();
             }
         }
         document.addEventListener("keydown", escapePressHandler);
@@ -43,15 +37,10 @@ const Modal = ({ children} : MyComponentProps) => {
         }
     }, []);
 
-    const closeModal = () => {
-        dispatch(resetOrder());
-        dispatch(resetIngredientDetails());
-    }
-
     const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
         if (!e.currentTarget.id) return;
         if (e.currentTarget.id === 'modal-overlay') {
-            closeModal();
+            onClose();
         }
         e.stopPropagation();
     }
@@ -63,7 +52,7 @@ const Modal = ({ children} : MyComponentProps) => {
             <ModalOverlay onClick={handleClick}>
                 <div className={styles.container}>
                     <CloseIcon
-                        type="primary" className={`${styles.close} mt-15 mr-10`} onClick={closeModal}
+                        type="primary" className={`${styles.close} mt-15 mr-10`} onClick={onClose}
                     />
                     {children}
                 </div>
