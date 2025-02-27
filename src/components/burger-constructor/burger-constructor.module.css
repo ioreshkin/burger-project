@@ -2,18 +2,8 @@ section {
     max-width: 600px;
 }
 
-.container {
-    display: flex;
-    width: 536px;
-}
-
 .external_container {
     display: flex;
-}
-
-.drag {
-    margin: auto;
-    cursor: grab;
 }
 
 .scroll_container {
@@ -22,7 +12,6 @@ section {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    gap: 16px;
 }
 
 .pay {

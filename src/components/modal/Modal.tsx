@@ -5,13 +5,11 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/ModalOverlay.tsx";
 
 interface MyComponentProps {
-    modal: string;
-    closeModal: () => void;
-    overlayClickHandler: (e: React. SyntheticEvent<HTMLElement>) => void;
     children: React.ReactNode;
+    onClose: () => void;
 }
 
-const Modal = ({modal, closeModal, overlayClickHandler, children} : MyComponentProps) => {
+const Modal = ({ children, onClose } : MyComponentProps) => {
 
     const [modalRoot, setModalRoot] = React.useState<HTMLElement>();
 
@@ -30,7 +28,7 @@ const Modal = ({modal, closeModal, overlayClickHandler, children} : MyComponentP
     React.useEffect(() => {
         const escapePressHandler = (e: KeyboardEvent) => {
             if (e.key === "Escape" || e.code === "Escape") {
-                closeModal();
+                onClose();
             }
         }
         document.addEventListener("keydown", escapePressHandler);
@@ -39,14 +37,22 @@ const Modal = ({modal, closeModal, overlayClickHandler, children} : MyComponentP
         }
     }, []);
 
-    if (modal === '') return null;
+    const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
+        if (!e.currentTarget.id) return;
+        if (e.currentTarget.id === 'modal-overlay') {
+            onClose();
+        }
+        e.stopPropagation();
+    }
+
+    if (!children || (!children[0] && !children[1])) return null;
 
     return ReactDOM.createPortal(
         (
-            <ModalOverlay onClick={overlayClickHandler}>
+            <ModalOverlay onClick={handleClick}>
                 <div className={styles.container}>
                     <CloseIcon
-                        type="primary" className={`${styles.close} mt-15 mr-10`} onClick={closeModal}
+                        type="primary" className={`${styles.close} mt-15 mr-10`} onClick={onClose}
                     />
                     {children}
                 </div>

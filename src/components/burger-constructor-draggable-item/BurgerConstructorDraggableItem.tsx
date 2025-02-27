@@ -1,0 +1,56 @@
+import {IConstructorIngredient} from "../../../utils/types.ts";
+import {useDrag, useDrop} from "react-dnd";
+import styles from "./burger-constructor-draggable-item.module.css";
+import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch} from "react-redux";
+import {move, removeFilling} from "../../services/burgerConstructorSlice.ts";
+
+interface MyComponentProps {
+    ingredient: IConstructorIngredient;
+    index: number;
+}
+
+const BurgerConstructorDraggableItem = ({ ingredient, index }: MyComponentProps) => {
+
+    const dispatch = useDispatch();
+
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'constructorIngredient',
+        item: ingredient,
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }));
+
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: "constructorIngredient",
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+        }),
+        drop: (item: IConstructorIngredient) => {
+            if (item.index !== index) {
+                dispatch(move({ dragIndex: item.index, hoverIndex: index}));
+            }
+        }
+    }));
+
+    const handleClose = () => {
+        dispatch(removeFilling(ingredient.key));
+    }
+
+    return (
+        <div className={`${styles.container} ${isDragging ? styles.dragging : ""} ${isOver ? styles.highlight : ""} pb-4`}
+             key={ingredient.key} ref={(node) => drag(drop(node))}>
+            <DragIcon type="primary" className={styles.drag}/>
+            <ConstructorElement
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image}
+                extraClass="ml-3 pr-2"
+                handleClose={handleClose}
+            />
+        </div>
+    );
+};
+
+export default BurgerConstructorDraggableItem;
