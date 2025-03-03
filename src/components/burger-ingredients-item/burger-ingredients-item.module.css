@@ -9,3 +9,8 @@
     display: flex;
     justify-content: center;
 }
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}

@@ -38,14 +38,16 @@ const Modal = ({ children, onClose } : MyComponentProps) => {
     }, []);
 
     const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
-        if (!e.currentTarget.id) return;
-        if (e.currentTarget.id === 'modal-overlay') {
+        if (!e.target.id) return;
+        if (e.target.id === 'modal-overlay') {
             onClose();
         }
         e.stopPropagation();
     }
 
-    if (!children || (!children[0] && !children[1])) return null;
+    if (!modalRoot) {
+        return null;
+    }
 
     return ReactDOM.createPortal(
         (

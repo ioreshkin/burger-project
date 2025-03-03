@@ -17,3 +17,8 @@ export interface IConstructorIngredient extends IIngredient {
     key: string;
     index: number;
 }
+
+export interface IUser {
+    email: string;
+    name: string;
+}

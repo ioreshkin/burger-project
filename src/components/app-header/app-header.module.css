@@ -9,6 +9,7 @@ header {
 nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     max-width: 1240px;
     margin: auto;
 }
@@ -21,16 +22,30 @@ p {
     display: flex;
 }
 
+nav a {
+    text-decoration: none;
+}
+
 .title {
     display: flex;
     align-items: center;
     cursor: pointer;
+    color:white;
 }
 
-.logo {
-    margin: auto;
-    cursor: pointer;
+.title:visited {
+    color: white;
 }
+
+.title:active {
+    color: white;
+}
+
+/*.logo {*/
+/*    margin: auto;*/
+/*    cursor: pointer;*/
+/*    display: block;*/
+/*}*/
 
 .profile {
     margin-left: auto;
