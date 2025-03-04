@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import styles from "./forgot-password-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {request} from "../../services/request.ts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../services/store.ts";
-import {setResettingPassword} from "../../services/userSlice.ts";
+import {fetchForgotPassword} from "../../services/userSlice.ts";
 
 const ForgotPasswordPage = () => {
 
@@ -15,18 +14,11 @@ const ForgotPasswordPage = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        try {
-            request("password-reset", {method: "POST",headers: {
-                    "Content-Type": "application/json",
-                }, body: JSON.stringify({email: email})}).then(res => {
-                if (res.success) {
-                    navigate("/reset-password");
-                    dispatch(setResettingPassword(true));
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        dispatch(fetchForgotPassword({email: email})).then(() => {
+            navigate("/reset-password");
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     return (

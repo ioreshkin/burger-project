@@ -2,8 +2,7 @@ import styles from './profile-page.module.css'
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../services/store.ts";
-import {request} from "../../services/request.ts";
-import {fetchGetUser, fetchPatchUser, reset as resetUser} from "../../services/userSlice.ts";
+import {fetchGetUser, fetchLogout, fetchPatchUser} from "../../services/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 
@@ -32,24 +31,9 @@ const ProfilePage = () => {
     }, [dispatch, user.name, user.email]);
 
     const handleLogout = () => {
-        try {
-            request("auth/logout", {method: "POST",headers: {
-                    "Content-Type": "application/json",
-                }, body: JSON.stringify({token: localStorage.getItem('refreshToken')})}).then(res => {
-                if (res.success) {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
-                    dispatch(resetUser());
-                    navigate('/login');
-                }
-            });
-        } catch (error) {
+        dispatch(fetchLogout()).catch((error) => {
             console.log(error);
-        }
-    }
-
-    const handleSome = () => {
-        dispatch(fetchGetUser());
+        })
     }
 
     const handleClose = () => {
@@ -82,7 +66,7 @@ const ProfilePage = () => {
                     <div><p className="text text_type_main-medium">
                         Профиль
                     </p></div>
-                    <div onClick={handleSome}><p className="text text_type_main-medium text_color_inactive">
+                    <div onClick={() => navigate('/orders')}><p className="text text_type_main-medium text_color_inactive">
                         История заказов
                     </p></div>
                     <div onClick={handleLogout}><p className="text text_type_main-medium text_color_inactive">

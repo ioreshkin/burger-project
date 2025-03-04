@@ -4,8 +4,7 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../services/store.ts";
-import {setResettingPassword} from "../../services/userSlice.ts";
-import {request} from "../../services/request.ts";
+import {fetchResetPassword} from "../../services/userSlice.ts";
 
 const ResetPasswordPage = () => {
     const [password, setPassword] = useState('');
@@ -16,16 +15,11 @@ const ResetPasswordPage = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        dispatch(setResettingPassword(false));
-        request('password-reset/reset', {method: "POST",headers: {
-                "Content-Type": "application/json",
-            }, body: JSON.stringify({token: token, password: password})}).then(res => {
-            if (res.success) {
-                navigate('/login');
-            }}).catch(err => {
-                console.log(err);
-        });
-
+        dispatch(fetchResetPassword({token:token, password: password})).then(() => {
+            navigate('/login');
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (

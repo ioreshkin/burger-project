@@ -26,6 +26,10 @@
     height: 192px;
 }
 
+.navigation p {
+    cursor: pointer;
+}
+
 .buttons_block {
     display: flex;
     justify-content: right;

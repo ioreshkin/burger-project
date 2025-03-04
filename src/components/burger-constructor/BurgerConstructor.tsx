@@ -44,20 +44,18 @@ const BurgerConstructor = () => {
 
         if (user.name === '') {
             navigate('/login');
+        } else {
+            const ids = [];
+            ids.push(bun._id);
+            filling.map(item => ids.push(item._id));
+            ids.push(bun._id);
+
+            dispatch(fetchOrder({ingredients: ids})).then(
+                () => dispatch(reset())
+            );
         }
 
-        const ids = [];
-        ids.push(bun._id);
-        filling.map(item => ids.push(item._id));
-        ids.push(bun._id);
 
-        const req = {
-            ingredients: ids,
-        }
-
-        const resultAction = await dispatch(fetchOrder(req)).unwrap();
-
-        if (resultAction.success) dispatch(reset());
     }
 
     return (

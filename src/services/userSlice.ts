@@ -1,6 +1,6 @@
 import {IUser} from "../../utils/types.ts";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { requestWithAuth} from "./request.ts";
+import {request, requestWithAuth} from "./request.ts";
 
 interface IGetUserResponse {
     success: boolean,
@@ -10,6 +10,115 @@ interface IGetUserResponse {
 interface IPatchUserRequest extends IUser {
     password: string;
 }
+
+interface ILoginRequest {
+    email: string;
+    password: string;
+}
+
+interface ILoginResponse {
+    success: boolean;
+    user: IUser;
+    accessToken: string;
+    refreshToken: string;
+}
+
+interface IForgotPasswordRequest {
+    email: string;
+}
+
+interface IForgotPasswordResponse {
+    success: boolean;
+    message: string;
+}
+
+interface IResetPasswordRequest {
+    token: string;
+    password: string;
+}
+
+interface IResetPasswordResponse {
+    success: boolean;
+    message: string;
+}
+
+interface IRegisterRequest {
+    name: string;
+    email: string;
+    password: string;
+}
+
+interface IRegisterResponse {
+    success: boolean;
+    user: IUser;
+    accessToken: string;
+    refreshToken: string;
+}
+
+export const fetchLogin = createAsyncThunk<ILoginResponse, ILoginRequest>(
+    "user/fetchLogin",
+    async (data, { rejectWithValue }) => {
+        try {
+            return await request("auth/login", {method: "POST",headers: {
+                    "Content-Type": "application/json",
+                }, body: JSON.stringify({email: data.email, password: data.password})});
+        } catch (error) {
+            return rejectWithValue((error as Error).message);
+        }
+    }
+);
+
+export const fetchLogout = createAsyncThunk(
+    "user/fetchLogout",
+    async (_, { rejectWithValue }) => {
+        try {
+            return await request("auth/logout", {method: "POST",headers: {
+                    "Content-Type": "application/json",
+                }, body: JSON.stringify({token: localStorage.getItem("refreshToken")})});
+        } catch (error) {
+            return rejectWithValue((error as Error).message);
+        }
+    }
+);
+
+export const fetchRegister = createAsyncThunk<IRegisterResponse, IRegisterRequest>(
+    "user/fetchRegister",
+    async (data, { rejectWithValue }) => {
+        try {
+            return await request("auth/register", {method: "POST",headers: {
+                    "Content-Type": "application/json",
+                }, body: JSON.stringify({email: data.email, password: data.password, name: data.name})});
+        } catch (error) {
+            return rejectWithValue((error as Error).message);
+        }
+    }
+);
+
+export const fetchForgotPassword = createAsyncThunk<IForgotPasswordResponse, IForgotPasswordRequest>(
+    "user/fetchForgotPassword",
+    async (data, { rejectWithValue }) => {
+        try {
+            return await request("password-reset", {method: "POST",headers: {
+                    "Content-Type": "application/json",
+                }, body: JSON.stringify({email: data.email})});
+        } catch (error) {
+            return rejectWithValue((error as Error).message);
+        }
+    }
+);
+
+export const fetchResetPassword = createAsyncThunk<IResetPasswordResponse, IResetPasswordRequest>(
+    "user/fetchResetPassword",
+    async (data, { rejectWithValue }) => {
+        try {
+            return await request("password-reset/reset", {method: "POST",headers: {
+                    "Content-Type": "application/json",
+                }, body: JSON.stringify({token: data.token, password: data.password})});
+        } catch (error) {
+            return rejectWithValue((error as Error).message);
+        }
+    }
+);
 
 export const fetchGetUser = createAsyncThunk<IGetUserResponse>(
     "user/fetchGetUser",
@@ -42,6 +151,7 @@ export const fetchPatchUser = createAsyncThunk<IGetUserResponse, IPatchUserReque
 interface IUserSlice {
     user: IUser;
     isResettingPassword: boolean;
+    isLoggedIn: boolean;
     status: string;
     error: string | unknown;
 }
@@ -52,6 +162,7 @@ const initialState: IUserSlice = {
         name: ''
     },
     isResettingPassword: false,
+    isLoggedIn: false,
     status: '',
     error: ''
 }
@@ -59,20 +170,7 @@ const initialState: IUserSlice = {
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {
-        reset: (state) => {
-            state.user = initialState.user;
-            state.isResettingPassword = initialState.isResettingPassword;
-            state.status = initialState.status;
-            state.error = initialState.error;
-        },
-        set:(state, action: PayloadAction<IUser>) => {
-            state.user = action.payload;
-        },
-        setResettingPassword: (state, action: PayloadAction<boolean>) => {
-            state.isResettingPassword = action.payload;
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchGetUser.pending, (state) => {
@@ -82,11 +180,13 @@ const userSlice = createSlice({
             .addCase(fetchGetUser.fulfilled, (state, action:PayloadAction<IGetUserResponse>) => {
                 state.status = "succeeded";
                 state.user = action.payload.user;
+                state.isLoggedIn = true;
             })
             .addCase(fetchGetUser.rejected, (state, action:PayloadAction<string | unknown>) => {
                 state.status = "failed";
                 state.error = action.payload;
                 state.user = initialState.user;
+                state.isLoggedIn = false;
             })
             .addCase(fetchPatchUser.pending, (state) => {
                 state.status = "loading";
@@ -101,9 +201,87 @@ const userSlice = createSlice({
                 state.error = action.payload;
                 state.user = initialState.user;
             })
+            .addCase(fetchLogin.pending, (state) => {
+                state.status = "loading";
+                state.error = "";
+            })
+            .addCase(fetchLogin.fulfilled, (state, action:PayloadAction<ILoginResponse>) => {
+                state.status = "succeeded";
+                localStorage.setItem('accessToken', action.payload.accessToken.replace('Bearer ', ''));
+                localStorage.setItem('refreshToken', action.payload.refreshToken);
+                state.user = action.payload.user;
+                state.isLoggedIn = true
+
+            })
+            .addCase(fetchLogin.rejected, (state, action:PayloadAction<string | unknown>) => {
+                state.status = "failed";
+                state.error = action.payload;
+                state.user = initialState.user;
+                state.isLoggedIn = false;
+            })
+            .addCase(fetchLogout.pending, (state) => {
+                state.status = "loading";
+                state.error = "";
+            })
+            .addCase(fetchLogout.fulfilled, (state) => {
+                state.status = "succeeded";
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                state.user = initialState.user;
+                state.isResettingPassword = initialState.isResettingPassword;
+                state.isLoggedIn = initialState.isLoggedIn;
+                state.status = initialState.status;
+                state.error = initialState.error;
+            })
+            .addCase(fetchLogout.rejected, (state, action:PayloadAction<string | unknown>) => {
+                state.status = "failed";
+                state.error = action.payload;
+                state.user = initialState.user;
+            })
+            .addCase(fetchResetPassword.pending, (state) => {
+                state.status = "loading";
+                state.error = "";
+            })
+            .addCase(fetchResetPassword.fulfilled, (state) => {
+                state.status = "succeeded";
+                state.isResettingPassword = false;
+            })
+            .addCase(fetchResetPassword.rejected, (state, action:PayloadAction<string | unknown>) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+            .addCase(fetchForgotPassword.pending, (state) => {
+                state.status = "loading";
+                state.error = "";
+            })
+            .addCase(fetchForgotPassword.fulfilled, (state) => {
+                state.status = "succeeded";
+                state.isResettingPassword = true;
+            })
+            .addCase(fetchForgotPassword.rejected, (state, action:PayloadAction<string | unknown>) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+            .addCase(fetchRegister.pending, (state) => {
+                state.status = "loading";
+                state.error = "";
+            })
+            .addCase(fetchRegister.fulfilled, (state, action:PayloadAction<IRegisterResponse>) => {
+                state.status = "succeeded";
+                localStorage.setItem('accessToken', action.payload.accessToken.replace('Bearer ', ''));
+                localStorage.setItem('refreshToken', action.payload.refreshToken);
+                state.user = action.payload.user;
+                state.isLoggedIn = true
+
+            })
+            .addCase(fetchRegister.rejected, (state, action:PayloadAction<string | unknown>) => {
+                state.status = "failed";
+                state.error = action.payload;
+                state.user = initialState.user;
+                state.isLoggedIn = false;
+            })
     }
 });
 
-export const { reset, set, setResettingPassword } = userSlice.actions;
 
 export default userSlice.reducer;

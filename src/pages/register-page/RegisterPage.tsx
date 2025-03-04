@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import styles from "./register-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, useNavigate} from "react-router-dom";
-import {request} from "../../services/request.ts";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../services/store.ts";
-import { set as setUser } from '../../services/userSlice.ts';
+import {fetchRegister} from '../../services/userSlice.ts';
 
 const RegisterPage = () => {
     const [name, setName] = useState('');
@@ -14,23 +13,16 @@ const RegisterPage = () => {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from;
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        try {
-            request("auth/register", {method: "POST",headers: {
-                    "Content-Type": "application/json",
-                }, body: JSON.stringify({email: email, password:password, name: name})}).then(res => {
-                if (res.success) {
-                    localStorage.setItem('accessToken', res.accessToken.replace('Bearer ', ''));
-                    localStorage.setItem('refreshToken', res.refreshToken);
-                    dispatch(setUser(res.user));
-                    navigate('/');
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        dispatch(fetchRegister({email: email, password: password, name: name})).then(() => {
+            navigate(from ? from : '/');
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (

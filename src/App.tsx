@@ -8,7 +8,7 @@ import ForgotPasswordPage from "./pages/forgot-password-page/ForgotPasswordPage.
 import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage.tsx";
 import ProfilePage from "./pages/profile-page/ProfilePage.tsx";
 import ProtectedRouteElement from "./components/protected-route-element/ProtectedRouteElement.tsx";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {fetchGetUser} from "./services/userSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "./services/store.ts";
@@ -16,6 +16,7 @@ import IngredientDetails from "./components/ingredient-details/IngredientDetails
 import Modal from "./components/modal/Modal.tsx";
 import {reset as resetIngredientDetails} from "./services/ingredientDetailsSlice.ts";
 import NotFoundPage from "./pages/not-found-page/NotFoundPage.tsx";
+import {fetchIngredients} from "./services/ingredientsSlice.ts";
 
 export type filling = {
     id: string;
@@ -32,9 +33,13 @@ function App() {
     const dispatch = useDispatch<AppDispatch>();
     const location = useLocation();
     const navigate = useNavigate();
-    const background: boolean = !!location.state?.background;
+    const background = location.state?.background;
     const { user } = useSelector((state:RootState) => state.user);
     const { isResettingPassword } = useSelector((state:RootState) => state.user);
+
+    React.useEffect(() => {
+        dispatch(fetchIngredients());
+    }, [dispatch]);
 
     useEffect(() => {
         if (user.name === '' && localStorage.getItem('accessToken') !== null) {
@@ -51,14 +56,10 @@ function App() {
   return (
       <>
           <AppHeader/>
-          <Routes>
+          <Routes location={background || location}>
               <Route path="/" element={<MainPage />} />
               <Route path='/ingredients/:ingredientId'
-                     element={background ?
-                         <Modal onClose={handleModalClose}>
-                            <IngredientDetails/>
-                         </Modal> :
-                         <IngredientDetails />} />
+                     element={<IngredientDetails />} />
               <Route path="/login" element={<ProtectedRouteElement
                   element={<LoginPage />} needAuth={false} />} />
               <Route path="/register" element={<ProtectedRouteElement
@@ -73,6 +74,19 @@ function App() {
                   element={<ProfilePage />} needAuth={true} />} />
               <Route path='*' element={<NotFoundPage />} />
           </Routes>
+
+          {background &&
+              <Routes>
+                  <Route
+                      path='/ingredients/:ingredientId'
+                      element={
+                          <Modal onClose={handleModalClose}>
+                              <IngredientDetails />
+                          </Modal>
+                      }
+                  />
+              </Routes>
+         }
       </>
   )
 }
