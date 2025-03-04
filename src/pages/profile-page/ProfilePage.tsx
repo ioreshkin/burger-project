@@ -2,7 +2,7 @@ import styles from './profile-page.module.css'
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../services/store.ts";
-import {fetchGetUser, fetchLogout, fetchPatchUser} from "../../services/userSlice.ts";
+import {fetchLogout, fetchPatchUser} from "../../services/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 
@@ -24,11 +24,10 @@ const ProfilePage = () => {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        dispatch(fetchGetUser());
         setNameForm({value: user.name, isEditing: false});
         setEmailForm({value: user.email, isEditing: false});
         setPasswordForm({value: '', isEditing: false});
-    }, [dispatch, user.name, user.email]);
+    }, []);
 
     const handleLogout = () => {
         dispatch(fetchLogout()).catch((error) => {

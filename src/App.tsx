@@ -39,13 +39,13 @@ function App() {
 
     React.useEffect(() => {
         dispatch(fetchIngredients());
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         if (user.name === '' && localStorage.getItem('accessToken') !== null) {
             dispatch(fetchGetUser());
         }
-    }, [dispatch, user.name]);
+    }, [user.name]);
 
     const handleModalClose = () => {
         // Возвращаемся к предыдущему пути при закрытии модалки

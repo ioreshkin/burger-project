@@ -20,10 +20,14 @@ const AppHeader = () => {
                         </div>
                     </Link>
 
-                    <div className={`${styles.title} p-5`}>
-                        <ListIcon type="secondary" className="mr-2"/>
-                        <p className={`text text_type_main-default ${location.pathname != '/orders' && 'text_color_inactive'}`}>Лента заказов</p>
-                    </div>
+                    <Link to='/orders'>
+                        <div className={`${styles.title} p-5`}>
+                            <ListIcon type="secondary" className="mr-2"/>
+                            <p className={`text text_type_main-default ${location.pathname != '/orders' && 'text_color_inactive'}`}>Лента
+                                заказов</p>
+                        </div>
+                    </Link>
+
                 </div>
                 <Link to="/">
                     <Logo className={styles.logo}/>
@@ -31,7 +35,7 @@ const AppHeader = () => {
 
                 <Link to='/profile'>
                     <div className={`${styles.title} ${styles.profile} p-5`}>
-                        <ProfileIcon type="secondary" className="mr-2"/>
+                    <ProfileIcon type="secondary" className="mr-2"/>
                         <p className={`text text_type_main-default 
                         ${(location.pathname !== '/login' && location.pathname !== '/profile') && 'text_color_inactive'}`}>Личный кабинет</p>
                     </div>
