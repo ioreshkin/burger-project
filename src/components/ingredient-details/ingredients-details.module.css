@@ -1,13 +1,25 @@
 .container {
     display: flex;
     flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.content {
+    width: 640px;
+    height: 575px;
+}
+
+.content p {
+    display: inline-block;
 }
 
 .nutritional_container {
     display: flex;
     gap: 20px;
     justify-content: center;
-
 }
 
 .nutritional_container p {

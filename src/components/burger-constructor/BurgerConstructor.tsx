@@ -8,12 +8,13 @@ import { useDrop} from "react-dnd";
 import { IIngredient} from "../../../utils/types.ts";
 import {addFilling, reset, setBun} from "../../services/burgerConstructorSlice.ts";
 import BurgerConstructorDraggableItem from "../burger-constructor-draggable-item/BurgerConstructorDraggableItem.tsx";
+import {useNavigate} from "react-router-dom";
 
 const BurgerConstructor = () => {
     const { bun, filling } = useSelector((state:RootState) => state.burgerConstructor);
-
+    const { user } = useSelector((state:RootState) => state.user);
     const [cost, setCost] = React.useState(0);
-
+    const navigate = useNavigate();
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -40,18 +41,21 @@ const BurgerConstructor = () => {
     }, [bun, filling])
 
     const handleClick = async () => {
-        const ids = [];
-        ids.push(bun._id);
-        filling.map(item => ids.push(item._id));
-        ids.push(bun._id);
 
-        const req = {
-            ingredients: ids,
+        if (user.name === '') {
+            navigate('/login');
+        } else {
+            const ids = [];
+            ids.push(bun._id);
+            filling.map(item => ids.push(item._id));
+            ids.push(bun._id);
+
+            dispatch(fetchOrder({ingredients: ids})).then(
+                () => dispatch(reset())
+            );
         }
 
-        const resultAction = await dispatch(fetchOrder(req)).unwrap();
 
-        if (resultAction.success) dispatch(reset());
     }
 
     return (

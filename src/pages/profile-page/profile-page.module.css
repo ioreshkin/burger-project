@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.info_block svg {
+    cursor: pointer;
+}
+
+.info_block {
+    color: #8585AD
+}
+
+.inactive {
+    color: #8585AD
+}
+
+.nav_block {
+    width: 320px;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 192px;
+}
+
+.navigation p {
+    cursor: pointer;
+}
+
+.buttons_block {
+    display: flex;
+    justify-content: right;
+}

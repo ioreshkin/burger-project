@@ -3,6 +3,7 @@ import ingredientsReducer from '../services/ingredientsSlice.ts'
 import ingredientDetailsReducer from '../services/ingredientDetailsSlice.ts';
 import burgerConstructorReducer from "../services/burgerConstructorSlice.ts";
 import orderReducer from '../services/orderSlice.ts';
+import userReducer from '../services/userSlice.ts';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         ingredientDetails: ingredientDetailsReducer,
         burgerConstructor: burgerConstructorReducer,
         order: orderReducer,
+        user: userReducer
     },
     devTools: process.env.NODE_ENV !== 'production'
 });
