@@ -10,13 +10,13 @@ import ProfilePage from "./pages/profile-page/ProfilePage.tsx";
 import ProtectedRouteElement from "./components/protected-route-element/ProtectedRouteElement.tsx";
 import React, {useEffect} from "react";
 import {fetchGetUser} from "./services/userSlice.ts";
-import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "./services/store.ts";
 import IngredientDetails from "./components/ingredient-details/IngredientDetails.tsx";
 import Modal from "./components/modal/Modal.tsx";
 import {reset as resetIngredientDetails} from "./services/ingredientDetailsSlice.ts";
 import NotFoundPage from "./pages/not-found-page/NotFoundPage.tsx";
 import {fetchIngredients} from "./services/ingredientsSlice.ts";
+import {useAppDispatch, useAppSelector} from "./services/hooks.ts";
 
 export type filling = {
     id: string;
@@ -30,12 +30,12 @@ export type selected = {
 
 
 function App() {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
     const background = location.state?.background;
-    const { user } = useSelector((state:RootState) => state.user);
-    const { isResettingPassword } = useSelector((state:RootState) => state.user);
+    const { user } = useAppSelector(state => state.user);
+    const { isResettingPassword } = useAppSelector(state => state.user);
 
     React.useEffect(() => {
         dispatch(fetchIngredients());

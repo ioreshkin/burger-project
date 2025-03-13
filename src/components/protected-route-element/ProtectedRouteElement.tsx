@@ -1,7 +1,5 @@
-
 import {Navigate, useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {RootState} from "../../services/store.ts";
+import {useAppSelector} from "../../services/hooks.ts";
 
 interface ProtectedRouteProps {
     element: React.ReactNode;
@@ -9,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRouteElement = ({ element, needAuth }: ProtectedRouteProps) => {
-    const { isLoggedIn } = useSelector((state:RootState) => state.user);
+    const { isLoggedIn } = useAppSelector(state => state.user);
     const location = useLocation();
     const from = location.state?.from || '/';
 

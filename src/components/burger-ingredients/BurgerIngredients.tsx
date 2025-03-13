@@ -3,14 +3,7 @@ import React, {SyntheticEvent} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsItem from "../burger-ingredients-item/BurgerIngredientsItem.tsx";
 import {IIngredient} from "../../../utils/types.ts";
-import {useSelector} from "react-redux";
-import {RootState} from "../../services/store.ts";
-
-// interface MyComponentProps {
-//     data: IIngredient[];
-//     selected: selected;
-//     onClick: (ingredient: IIngredient) => void;
-// }
+import {useAppSelector} from "../../services/hooks.ts";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('one');
@@ -18,10 +11,8 @@ const BurgerIngredients = () => {
     const [mains, setMains] = React.useState<IIngredient[]>([]);
     const [sauces, setSauces] = React.useState<IIngredient[]>([]);
 
-    const { items, status, error} = useSelector((state:RootState) => state.ingredients);
-    const { bun, filling } = useSelector((state:RootState) => state.burgerConstructor);
-
-
+    const { items, status, error} = useAppSelector(state => state.ingredients);
+    const { bun, filling } = useAppSelector(state => state.burgerConstructor);
 
     React.useEffect(() => {
         if (items.length > 0) {

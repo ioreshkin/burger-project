@@ -1,11 +1,10 @@
 import styles from './order-details.module.css';
 import markImg from '../../images/done.png';
-import {useSelector} from "react-redux";
-import {RootState} from "../../services/store.ts";
+import {useAppSelector} from "../../services/hooks.ts";
 
 const OrderDetails = () => {
 
-    const { number } = useSelector((state: RootState) => state.order);
+    const { number } = useAppSelector(state => state.order);
 
 
     return (

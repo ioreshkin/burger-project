@@ -2,16 +2,15 @@ import React, {useState} from 'react';
 import styles from "./register-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../services/store.ts";
 import {fetchRegister} from '../../services/userSlice.ts';
+import {useAppDispatch} from "../../services/hooks.ts";
 
 const RegisterPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setPasswordVisible] = useState(false);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from;

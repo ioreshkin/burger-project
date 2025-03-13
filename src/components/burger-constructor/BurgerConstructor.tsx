@@ -1,22 +1,21 @@
 import styles from './burger-constructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../services/store.ts";
 import {fetchOrder} from "../../services/orderSlice.ts";
 import { useDrop} from "react-dnd";
 import { IIngredient} from "../../../utils/types.ts";
 import {addFilling, reset, setBun} from "../../services/burgerConstructorSlice.ts";
 import BurgerConstructorDraggableItem from "../burger-constructor-draggable-item/BurgerConstructorDraggableItem.tsx";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 
 const BurgerConstructor = () => {
-    const { bun, filling } = useSelector((state:RootState) => state.burgerConstructor);
-    const { user } = useSelector((state:RootState) => state.user);
+    const { bun, filling } = useAppSelector(state => state.burgerConstructor);
+    const { user } = useAppSelector(state => state.user);
     const [cost, setCost] = React.useState(0);
     const navigate = useNavigate();
 
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const [, drop] = useDrop(() => ({
         accept: 'ingredient',
