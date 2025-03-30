@@ -1,10 +1,9 @@
 import styles from './profile-page.module.css'
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../services/store.ts";
 import {fetchLogout, fetchPatchUser} from "../../services/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 
 const ProfilePage = () => {
 
@@ -13,8 +12,8 @@ const ProfilePage = () => {
         isEditing: boolean;
     }
 
-    const { user } = useSelector((state:RootState) => state.user);
-    const dispatch = useDispatch<AppDispatch>();
+    const { user } = useAppSelector(state => state.user);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [nameForm, setNameForm] = useState<IForm>({value: '', isEditing: false});
     const [emailForm, setEmailForm] = useState<IForm>({value: '', isEditing: false});

@@ -2,8 +2,8 @@ import {IConstructorIngredient} from "../../../utils/types.ts";
 import {useDrag, useDrop} from "react-dnd";
 import styles from "./burger-constructor-draggable-item.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch} from "react-redux";
 import {move, removeFilling} from "../../services/burgerConstructorSlice.ts";
+import {useAppDispatch} from "../../services/hooks.ts";
 
 interface MyComponentProps {
     ingredient: IConstructorIngredient;
@@ -12,7 +12,7 @@ interface MyComponentProps {
 
 const BurgerConstructorDraggableItem = ({ ingredient, index }: MyComponentProps) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'constructorIngredient',

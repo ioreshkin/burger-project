@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import styles from "./reset-password-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../services/store.ts";
 import {fetchResetPassword} from "../../services/userSlice.ts";
+import {useAppDispatch} from "../../services/hooks.ts";
 
 const ResetPasswordPage = () => {
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setPasswordVisible] = useState(false);
     const [token, setToken] = useState('');
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

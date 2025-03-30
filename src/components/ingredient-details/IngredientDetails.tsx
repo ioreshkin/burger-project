@@ -1,15 +1,14 @@
 import styles from './ingredients-details.module.css';
 import {IIngredient} from "../../../utils/types.ts";
 import {useParams} from "react-router-dom";
-import { useSelector} from "react-redux";
-import { RootState} from "../../services/store.ts";
 import {useEffect, useState} from "react";
 import NotFoundPage from "../../pages/not-found-page/NotFoundPage.tsx";
+import {useAppSelector} from "../../services/hooks.ts";
 
 const IngredientDetails = () => {
 
     const {ingredientId} = useParams<{ ingredientId: string }>();
-    const ingredients: IIngredient[] = useSelector((state: RootState) => state.ingredients.items);
+    const ingredients: IIngredient[] = useAppSelector(state => state.ingredients.items);
 
     const [ingredient, setIngredient] = useState<IIngredient | undefined>(undefined);
 

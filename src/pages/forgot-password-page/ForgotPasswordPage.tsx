@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import styles from "./forgot-password-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../services/store.ts";
 import {fetchForgotPassword} from "../../services/userSlice.ts";
+import {useAppDispatch} from "../../services/hooks.ts";
 
 const ForgotPasswordPage = () => {
 
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
