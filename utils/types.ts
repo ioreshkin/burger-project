@@ -22,3 +22,20 @@ export interface IUser {
     email: string;
     name: string;
 }
+
+export interface IOrder {
+    _id: string;
+    status: string;
+    name: string;
+    ingredients: string[];
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IOrdersRequest {
+    success: boolean;
+    orders: IOrder[];
+    total: number;
+    totalToday: number;
+}

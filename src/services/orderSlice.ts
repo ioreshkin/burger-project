@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {request} from "./request.ts";
+import {requestWithAuth} from "./request.ts";
 
 interface IOrderResponse {
     name: string;
@@ -13,13 +13,13 @@ interface IOrder {
     ingredients: string[];
 }
 
-export const fetchOrder = createAsyncThunk<IOrderResponse, IOrder>(
+    export const fetchOrder = createAsyncThunk<IOrderResponse, IOrder>(
     "order/fetchOrder",
     async (data, { rejectWithValue }) => {
         try {
-            return await request("orders", {method: "POST",headers: {
+            return await requestWithAuth("orders", {method: "POST",headers: {
                     "Content-Type": "application/json",
-                }, body: JSON.stringify(data)})
+                }, body: JSON.stringify(data)});
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }

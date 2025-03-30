@@ -42,7 +42,6 @@ const IngredientDetails = () => {
                     </div>
                 </div>
             </div>
-
         </div>
 };
 

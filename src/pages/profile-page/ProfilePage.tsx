@@ -61,15 +61,21 @@ const ProfilePage = () => {
         <div className={`${styles.container} mt-30`}>
             <div className={`${styles.nav_block} mr-15`}>
                 <div className={`${styles.navigation} mb-20`}>
-                    <div><p className="text text_type_main-medium">
-                        Профиль
-                    </p></div>
-                    <div onClick={() => navigate('/orders')}><p className="text text_type_main-medium text_color_inactive">
-                        История заказов
-                    </p></div>
-                    <div onClick={handleLogout}><p className="text text_type_main-medium text_color_inactive">
-                        Выход
-                    </p></div>
+                    <div onClick={() => navigate('/profile')}>
+                        <p className="text text_type_main-medium">
+                            Профиль
+                        </p>
+                    </div>
+                    <div onClick={() => navigate('/profile/orders')}>
+                        <p className="text text_type_main-medium text_color_inactive">
+                            История заказов
+                        </p>
+                    </div>
+                    <div onClick={handleLogout}>
+                        <p className="text text_type_main-medium text_color_inactive">
+                            Выход
+                        </p>
+                    </div>
                 </div>
                 <p className="text text_type_main-default text_color_inactive">
                     В этом разеле вы можете изменить свои персональные данные

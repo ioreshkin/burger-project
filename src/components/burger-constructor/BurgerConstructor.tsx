@@ -53,8 +53,6 @@ const BurgerConstructor = () => {
                 () => dispatch(reset())
             );
         }
-
-
     }
 
     return (

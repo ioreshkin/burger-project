@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.nav_block {
+    width: 320px;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 192px;
+}
+
+.navigation p {
+    cursor: pointer;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

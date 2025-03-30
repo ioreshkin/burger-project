@@ -1,12 +1,19 @@
 import {BASE_URL} from "../../utils/constants.ts";
 
 export const request = (endpoint: string, options?: RequestInit) => {
-    return fetch(BASE_URL + "/" + endpoint, options).then(checkResponse);
+    return fetch(BASE_URL + "api/" + endpoint, options).then(checkResponse);
 };
 
 export const requestWithAuth = async (endpoint: string, options?: RequestInit): Promise<any> => {
     try {
-        const res = await fetch(BASE_URL + "/" + endpoint, options);
+        const updatedOptions = {
+            ...options,
+            headers: {
+                ...options?.headers,
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        };
+        const res = await fetch(BASE_URL + "api/" + endpoint, updatedOptions);
         if (res.ok) {
             return checkResponse(res);
         }

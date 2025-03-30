@@ -1,11 +1,10 @@
-import styles from './order-details.module.css';
+import styles from './order-created.module.css';
 import markImg from '../../images/done.png';
 import {useAppSelector} from "../../services/hooks.ts";
 
-const OrderDetails = () => {
+const OrderCreated = () => {
 
     const { number } = useAppSelector(state => state.order);
-
 
     return (
         <div className={styles.container}>
@@ -21,4 +20,4 @@ const OrderDetails = () => {
 );
 };
 
-export default OrderDetails;
+export default OrderCreated;

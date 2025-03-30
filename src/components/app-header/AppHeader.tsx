@@ -20,10 +20,10 @@ const AppHeader = () => {
                         </div>
                     </Link>
 
-                    <Link to='/orders'>
+                    <Link to='/feed'>
                         <div className={`${styles.title} p-5`}>
                             <ListIcon type="secondary" className="mr-2"/>
-                            <p className={`text text_type_main-default ${location.pathname != '/orders' && 'text_color_inactive'}`}>Лента
+                            <p className={`text text_type_main-default ${location.pathname != '/feed' && 'text_color_inactive'}`}>Лента
                                 заказов</p>
                         </div>
                     </Link>
