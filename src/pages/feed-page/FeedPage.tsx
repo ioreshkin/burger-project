@@ -1,13 +1,24 @@
 import styles from './feed-page.module.css';
-import {useAppSelector} from "../../services/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 import {useEffect, useState} from "react";
 import OrdersItem from "../../components/orders-item/OrdersItem.tsx";
+import {feedConnect, feedDisconnect} from "../../services/actions.ts";
 
 
 const FeedPage = () => {
-    const { orders, today, total } = useAppSelector(state => state.ordersFeedAll);
+    const { orders, today, total } = useAppSelector(state => state.ordersFeed);
     const [done, setDone] = useState<number[]>([]);
     const [pending, setPending] = useState<number[]>([]);
+    const dispatch = useAppDispatch();
+    const URL = 'wss://norma.nomoreparties.space/orders/all'
+
+    useEffect(() => {
+        dispatch(feedConnect(URL));
+
+        return () => {
+            dispatch(feedDisconnect());
+        };
+    }, []);
 
     useEffect(() => {
         const newDone:number[] = [];

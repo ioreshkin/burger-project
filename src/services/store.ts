@@ -1,30 +1,43 @@
-import {Action, configureStore, ThunkAction} from '@reduxjs/toolkit';
-import ingredientsReducer from '../services/ingredientsSlice.ts'
-import ingredientDetailsReducer from '../services/ingredientDetailsSlice.ts';
-import burgerConstructorReducer from "../services/burgerConstructorSlice.ts";
-import orderReducer from '../services/orderSlice.ts';
-import userReducer from '../services/userSlice.ts';
-import ordersFeedAllReducer from './ordersFeedAllSlice.ts';
-import ordersFeedReducer from './ordersFeedSlice.ts';
+import {combineSlices, configureStore} from '@reduxjs/toolkit';
+import {websocketMiddleware} from "./websocketMiddleware.ts";
+import {
+    feedConnect,
+    feedDisconnect,
+    feedOnMessage,
+    profileConnect,
+    profileDisconnect,
+    profileOnMessage
+} from "./actions.ts";
+import {burgerConstructorSlice} from "./burgerConstructorSlice.ts";
+import {ingredientDetailsSlice} from "./ingredientDetailsSlice.ts";
+import {ingredientSlice} from "./ingredientsSlice.ts";
+import {ordersFeedSlice} from "./ordersFeedSlice.ts";
+import {profileFeedSlice} from "./profileFeedSlice.ts";
+import {orderSlice} from "./orderSlice.ts";
+import {userSlice} from "./userSlice.ts";
+import {IOrdersRequest} from "../../utils/types.ts";
+
+const rootReducer = combineSlices(burgerConstructorSlice, ingredientDetailsSlice, ingredientSlice,
+    ordersFeedSlice, profileFeedSlice, orderSlice, userSlice)
+
+const ordersFeedMiddleware = websocketMiddleware<IOrdersRequest>({
+    connect: feedConnect,
+    disconnect: feedDisconnect,
+    onMessage: feedOnMessage
+}, false)
+
+const profileFeedMiddleware = websocketMiddleware<IOrdersRequest>({
+    connect: profileConnect,
+    disconnect: profileDisconnect,
+    onMessage: profileOnMessage
+}, true)
 
 export const store = configureStore({
-    reducer: {
-        ingredients: ingredientsReducer,
-        ingredientDetails: ingredientDetailsReducer,
-        burgerConstructor: burgerConstructorReducer,
-        order: orderReducer,
-        user: userReducer,
-        ordersFeedAll: ordersFeedAllReducer,
-        ordersFeed: ordersFeedReducer
-    },
-    devTools: process.env.NODE_ENV !== 'production'
+    reducer: rootReducer,
+    devTools: process.env.NODE_ENV !== 'production',
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(ordersFeedMiddleware, profileFeedMiddleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk<ReturnType = void> = ThunkAction<
-    ReturnType,
-    RootState,
-    unknown,
-    Action<string>
->;
+export type RootState = ReturnType<typeof rootReducer>;

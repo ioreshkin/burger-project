@@ -16,9 +16,7 @@ import {reset as resetIngredientDetails} from "./services/ingredientDetailsSlice
 import NotFoundPage from "./pages/not-found-page/NotFoundPage.tsx";
 import {fetchIngredients} from "./services/ingredientsSlice.ts";
 import {useAppDispatch, useAppSelector} from "./services/hooks.ts";
-import {connectOrdersFeedAll, disconnectOrdersFeedAll} from "./services/ordersFeedAllSlice.ts";
 import FeedPage from "./pages/feed-page/FeedPage.tsx";
-import {connectOrdersFeed, disconnectOrdersFeed} from "./services/ordersFeedSlice.ts";
 import ProfileOrdersPage from "./pages/profile-orders-page/ProfileOrdersPage.tsx";
 import OrderDetails from "./components/order-details/OrderDetails.tsx";
 
@@ -32,14 +30,6 @@ function App() {
 
     React.useEffect(() => {
         dispatch(fetchIngredients());
-
-        dispatch(connectOrdersFeedAll());
-        dispatch(connectOrdersFeed());
-
-        return () => {
-            dispatch(disconnectOrdersFeedAll());
-            dispatch(disconnectOrdersFeed());
-        };
     }, [dispatch]);
 
     useEffect(() => {

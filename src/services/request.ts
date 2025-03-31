@@ -37,7 +37,7 @@ export const requestWithAuth = async (endpoint: string, options?: RequestInit): 
     }
 };
 
-const refreshToken = async () => {
+export const refreshToken = async () => {
     try {
         const res = await request("auth/token", {
             method: "POST",

@@ -38,7 +38,7 @@ const initialState: IOrderSlice = {
     error: ''
 }
 
-const orderSlice = createSlice({
+export const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
@@ -65,5 +65,3 @@ const orderSlice = createSlice({
 });
 
 export const { reset } = orderSlice.actions;
-
-export default orderSlice.reducer;

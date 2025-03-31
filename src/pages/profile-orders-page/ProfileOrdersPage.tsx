@@ -3,11 +3,23 @@ import {useNavigate} from "react-router-dom";
 import {fetchLogout} from "../../services/userSlice.ts";
 import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 import ProfileOrdersItem from "../../components/profile-orders-item/ProfileOrdersItem.tsx";
+import {useEffect} from "react";
+import {profileConnect, profileDisconnect} from "../../services/actions.ts";
 
 const ProfileOrdersPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { orders } = useAppSelector(state => state.ordersFeed);
+    const { orders } = useAppSelector(state => state.profileFeed);
+    const token = localStorage.getItem("accessToken");
+    const URL = `wss://norma.nomoreparties.space/orders?token=${token}`;
+
+    useEffect(() => {
+        dispatch(profileConnect(URL));
+
+        return () => {
+            dispatch(profileDisconnect());
+        };
+    }, []);
 
     const handleLogout = () => {
         dispatch(fetchLogout()).catch((error) => {

@@ -25,7 +25,7 @@ const initialState: IBurgerConstructorSlice = {
     filling: []
 }
 
-const burgerConstructorSlice = createSlice({
+export const burgerConstructorSlice = createSlice({
     name: 'burgerConstructor',
     initialState,
     reducers: {
@@ -68,5 +68,3 @@ const burgerConstructorSlice = createSlice({
 });
 
 export const { setBun, addFilling, removeFilling, reset, move } = burgerConstructorSlice.actions;
-
-export default burgerConstructorSlice.reducer;
