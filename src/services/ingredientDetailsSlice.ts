@@ -21,7 +21,7 @@ const initialState: IIngredientDetailsSlice = {
         __v:0}
 }
 
-const ingredientDetailsSlice = createSlice({
+export const ingredientDetailsSlice = createSlice({
     name: 'ingredientDetails',
     initialState,
     reducers: {
@@ -35,5 +35,3 @@ const ingredientDetailsSlice = createSlice({
 });
 
 export const { set, reset } = ingredientDetailsSlice.actions;
-
-export default ingredientDetailsSlice.reducer;

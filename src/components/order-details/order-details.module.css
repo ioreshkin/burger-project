@@ -1,14 +1,39 @@
 .container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
     align-items: center;
 }
 
-.mark_img {
-    width: 120px;
-    height: 120px;
+.center {
+    text-align: center;
 }
 
-.neon {
-    text-shadow: #1212b5 0px 0px 20px;
+.content {
+    width: 640px;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 312px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cyan {
+    color: #00CCCC;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    text-wrap: nowrap;
 }

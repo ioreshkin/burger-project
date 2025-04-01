@@ -30,7 +30,7 @@ const initialState: IIngredientsSlice = {
     error: ""
 }
 
-const ingredientSlice = createSlice({
+export const ingredientSlice = createSlice({
     name: 'ingredients',
     initialState,
     reducers: {},
@@ -50,5 +50,3 @@ const ingredientSlice = createSlice({
             })
     }
 });
-
-export default ingredientSlice.reducer;

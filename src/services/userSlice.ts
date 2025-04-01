@@ -167,7 +167,7 @@ const initialState: IUserSlice = {
     error: ''
 }
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {},
@@ -282,6 +282,3 @@ const userSlice = createSlice({
             })
     }
 });
-
-
-export default userSlice.reducer;

@@ -14,10 +14,6 @@ nav {
     margin: auto;
 }
 
-p {
-    display: inline;
-}
-
 .container {
     display: flex;
 }

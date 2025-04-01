@@ -10,7 +10,6 @@ interface MyComponentProps {
 }
 
 const BurgerIngredientsItem = ({ingredient, count} : MyComponentProps) => {
-
     const location = useLocation();
 
     const [, drag] = useDrag(() => ({

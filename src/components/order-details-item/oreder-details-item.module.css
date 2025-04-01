@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.huy {
+    flex-grow: 1;
+}
+
+.circle_image_internal {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background-color: #1c1c21;
+}
+
+.circle_image_external {
+    width: 62px;
+    height: 62px;
+    padding: 2px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #801AB2, #4C4CFF);
+}
+
+.circle_image_external img {
+    height: 100%;
+    margin-left: -49%;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    text-wrap: nowrap;
+}

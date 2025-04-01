@@ -1,0 +1,60 @@
+.content_box {
+    display: flex;
+    flex-direction: column;
+    width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex_box {
+    display: flex;
+    flex-direction: row;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.stats {
+    width: 520px;
+}
+
+.numbers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.numbers_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.cyan {
+    color: #00CCCC;
+}
+
+.statuses {
+    display: flex;
+    gap: 36px;
+}
+
+.statuses div {
+    width: 100%;
+}
+
+.stats_container {
+    width: 100%;
+}
+
+.stats_container p{
+    display: block;
+}
+
+.neon {
+    text-shadow: #1212b5 0px 0px 30px;
+}
