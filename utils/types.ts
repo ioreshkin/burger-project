@@ -33,7 +33,7 @@ export interface IOrder {
     updatedAt: string;
 }
 
-export interface IOrdersRequest {
+export interface IOrdersResponse {
     success: boolean;
     orders: IOrder[];
     total: number;

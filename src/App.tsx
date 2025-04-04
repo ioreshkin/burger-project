@@ -9,12 +9,12 @@ import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage.tsx
 import ProfilePage from "./pages/profile-page/ProfilePage.tsx";
 import ProtectedRouteElement from "./components/protected-route-element/ProtectedRouteElement.tsx";
 import React, {useEffect} from "react";
-import {fetchGetUser} from "./services/userSlice.ts";
+import {fetchGetUser} from "./services/slices/userSlice.ts";
 import IngredientDetails from "./components/ingredient-details/IngredientDetails.tsx";
 import Modal from "./components/modal/Modal.tsx";
-import {reset as resetIngredientDetails} from "./services/ingredientDetailsSlice.ts";
+import {reset as resetIngredientDetails} from "./services/slices/ingredientDetailsSlice.ts";
 import NotFoundPage from "./pages/not-found-page/NotFoundPage.tsx";
-import {fetchIngredients} from "./services/ingredientsSlice.ts";
+import {fetchIngredients} from "./services/slices/ingredientsSlice.ts";
 import {useAppDispatch, useAppSelector} from "./services/hooks.ts";
 import FeedPage from "./pages/feed-page/FeedPage.tsx";
 import ProfileOrdersPage from "./pages/profile-orders-page/ProfileOrdersPage.tsx";

@@ -1,10 +1,10 @@
 import styles from './burger-constructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import {fetchOrder} from "../../services/orderSlice.ts";
+import {fetchOrder} from "../../services/slices/orderSlice.ts";
 import { useDrop} from "react-dnd";
 import { IIngredient} from "../../../utils/types.ts";
-import {addFilling, reset, setBun} from "../../services/burgerConstructorSlice.ts";
+import {addFilling, reset, setBun} from "../../services/slices/burgerConstructorSlice.ts";
 import BurgerConstructorDraggableItem from "../burger-constructor-draggable-item/BurgerConstructorDraggableItem.tsx";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
@@ -56,8 +56,8 @@ const BurgerConstructor = () => {
     }
 
     return (
-        <section className="mt-25 pr-4 pl-4" ref={drop} >
-            <div className={`${styles.external_container} mb-4 pr-8`}>
+        <section data-testid="burger-constructor" className="mt-25 pr-4 pl-4" ref={drop} >
+            <div className={`${styles.external_container} mb-4 pr-8`} data-testid="constructor-bun-top">
                 {bun._id === '' ? <ConstructorElement
                     type="top"
                     isLocked={true}
@@ -75,13 +75,13 @@ const BurgerConstructor = () => {
                 />}
 
             </div>
-            <div className={`${styles.scroll_container} custom-scroll`}>
+            <div className={`${styles.scroll_container} custom-scroll`} data-testid="constructor-fillings">
                 {filling.map((ingredient, index) => {
-                    return <BurgerConstructorDraggableItem ingredient={ingredient} index={index} key={index} />
+                    return <BurgerConstructorDraggableItem ingredient={ingredient} index={index} key={index}/>
                 })}
             </div>
 
-            <div className={`${styles.external_container} mt-4 mb-10 pr-8`}>
+            <div className={`${styles.external_container} mt-4 mb-10 pr-8`} data-testid="constructor-bun-bottom">
                 {bun._id === '' ? null : <ConstructorElement
                     type="bottom"
                     isLocked={true}
@@ -93,7 +93,7 @@ const BurgerConstructor = () => {
             </div>
             <div className={styles.pay}>
                 <div className={`${styles.price} mr-10`}>
-                    <p className="text text_type_digits-medium">{cost}</p>
+                    <p data-testid="order-total" className="text text_type_digits-medium">{cost}</p>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button htmlType="button" type="primary" size="large" onClick={handleClick}>

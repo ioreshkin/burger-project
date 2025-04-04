@@ -1,6 +1,6 @@
 import styles from './profile-page.module.css'
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fetchLogout, fetchPatchUser} from "../../services/userSlice.ts";
+import {fetchLogout, fetchPatchUser} from "../../services/slices/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";

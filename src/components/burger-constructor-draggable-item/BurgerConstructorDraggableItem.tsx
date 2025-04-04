@@ -2,7 +2,7 @@ import {IConstructorIngredient} from "../../../utils/types.ts";
 import {useDrag, useDrop} from "react-dnd";
 import styles from "./burger-constructor-draggable-item.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {move, removeFilling} from "../../services/burgerConstructorSlice.ts";
+import {move, removeFilling} from "../../services/slices/burgerConstructorSlice.ts";
 import {useAppDispatch} from "../../services/hooks.ts";
 
 interface MyComponentProps {

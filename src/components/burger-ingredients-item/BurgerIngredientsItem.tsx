@@ -19,7 +19,7 @@ const BurgerIngredientsItem = ({ingredient, count} : MyComponentProps) => {
 
     return (
         <Link key={ingredient._id} to={`/ingredients/${ingredient._id}`} state={{ background: location }} className={styles.link}>
-            <div className={styles.container} ref={drag}>
+            <div data-testid={`ingredient-${ingredient._id}`} className={styles.container} ref={drag}>
                 <img src={ingredient.image} alt={ingredient.name} className="ml-4 mr-4 mb-1"/>
                 <div className={`${styles.price} mb-1`}>
                     <p className="text text_type_digits-default">{ingredient.price}</p>

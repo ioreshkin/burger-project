@@ -3,7 +3,7 @@ import BurgerIngredients from "../../components/burger-ingredients/BurgerIngredi
 import BurgerConstructor from "../../components/burger-constructor/BurgerConstructor.tsx";
 import Modal from "../../components/modal/Modal.tsx";
 import OrderCreated from "../../components/order-created/OrderCreated.tsx";
-import {reset as resetOrder} from "../../services/orderSlice.ts";
+import {reset as resetOrder} from "../../services/slices/orderSlice.ts";
 import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 
 const MainPage = () => {

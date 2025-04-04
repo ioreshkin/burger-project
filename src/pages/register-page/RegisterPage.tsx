@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from "./register-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {fetchRegister} from '../../services/userSlice.ts';
+import {fetchRegister} from '../../services/slices/userSlice.ts';
 import {useAppDispatch} from "../../services/hooks.ts";
 
 const RegisterPage = () => {

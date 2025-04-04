@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from "./reset-password-page.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {fetchResetPassword} from "../../services/userSlice.ts";
+import {fetchResetPassword} from "../../services/slices/userSlice.ts";
 import {useAppDispatch} from "../../services/hooks.ts";
 
 const ResetPasswordPage = () => {

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {IOrder, IOrdersRequest} from "../../utils/types.ts";
-import {profileOnMessage} from "./actions.ts";
+import {IOrder, IOrdersResponse} from "../../../utils/types.ts";
+import {profileOnMessage} from "../actions.ts";
 
-interface IOrdersFeedSlice {
+export interface IOrdersFeedSlice {
     orders: IOrder[];
 }
 
@@ -16,7 +16,7 @@ export const profileFeedSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(profileOnMessage, (state, action:PayloadAction<IOrdersRequest>) => {
+            .addCase(profileOnMessage, (state, action:PayloadAction<IOrdersResponse>) => {
                 state.orders = action.payload.orders.reverse();
             })
     }
