@@ -2,7 +2,7 @@ import styles from './modal-overlay.module.css';
 import React from "react";
 
 interface MyComponentProps {
-    onClick: (e: React. SyntheticEvent<HTMLElement>) => void;
+    onClick: (e: React. MouseEvent<HTMLElement>) => void;
     children: React.ReactNode;
 }
 

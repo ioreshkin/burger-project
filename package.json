@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy-script": "npm run build && scp -r ./dist/* ilya@84.201.141.148:/home/ilya/frontend"
   },
   "dependencies": {
     "@babel/runtime": "^7.27.0",

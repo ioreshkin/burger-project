@@ -55,8 +55,11 @@ const BurgerConstructor = () => {
         }
     }
 
+    const ref = React.useRef<HTMLDivElement>(null);
+    drop(ref);
+
     return (
-        <section data-testid="burger-constructor" className="mt-25 pr-4 pl-4" ref={drop} >
+        <section data-testid="burger-constructor" className="mt-25 pr-4 pl-4" ref={ref} >
             <div className={`${styles.external_container} mb-4 pr-8`} data-testid="constructor-bun-top">
                 {bun._id === '' ? <ConstructorElement
                     type="top"

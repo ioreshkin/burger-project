@@ -37,13 +37,13 @@ const Modal = ({ children, onClose } : MyComponentProps) => {
         }
     }, []);
 
-    const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
-        if (!e.target.id) return;
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+        if (!(e.target instanceof HTMLElement)) return;
         if (e.target.id === 'modal-overlay') {
             onClose();
         }
         e.stopPropagation();
-    }
+    };
 
     if (!modalRoot) {
         return null;

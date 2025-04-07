@@ -14,7 +14,6 @@ const MainPage = () => {
 
     const onClose = () => {
         dispatch(resetOrder());
-
     }
 
     return (
