@@ -1,14 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { ordersFeedSlice, IOrdersFeedSlice } from './ordersFeedSlice.ts';
+import { ordersFeedSlice } from './ordersFeedSlice.ts';
 import { feedOnMessage } from '../actions';
 import {IOrdersResponse, IOrder} from "../../../utils/types.ts";
 
 describe('ordersFeedSlice', () => {
-    const initialState: IOrdersFeedSlice = {
-        orders: [],
-        today: 0,
-        total: 0
-    };
+    const initialState= ordersFeedSlice.getInitialState();
 
     const mockOrder: IOrder = {
         _id: 'order1',

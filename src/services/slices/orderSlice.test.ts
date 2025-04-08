@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fetchOrder, orderSlice, IOrderSlice, IOrderResponse, IOrder } from './orderSlice';
+import { fetchOrder, orderSlice, IOrderResponse, IOrder } from './orderSlice';
 import { requestWithAuth } from '../request';
 
 vi.mock('../request', () => ({
@@ -9,15 +9,11 @@ vi.mock('../request', () => ({
 const mockedRequestWithAuth = vi.mocked(requestWithAuth);
 
 describe('orderSlice', () => {
-    const initialState: IOrderSlice = {
-        number: 0,
-        status: '',
-        error: '',
-    };
+    const initialState = orderSlice.getInitialState();
 
     describe('reducers', () => {
         it('should handle reset', () => {
-            const previousState: IOrderSlice = { ...initialState, number: 12345 };
+            const previousState = { ...initialState, number: 12345 };
             const nextState = orderSlice.reducer(previousState, orderSlice.actions.reset());
             expect(nextState.number).toEqual(0);
         });

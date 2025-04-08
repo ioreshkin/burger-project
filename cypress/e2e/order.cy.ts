@@ -31,6 +31,14 @@ describe('Drag and Drop Ingredients', () => {
         __v: 0
     };
 
+    const BUN_SELECTOR = `[data-testid="ingredient-${testBun._id}"]`;
+    const FILLING_SELECTOR = `[data-testid="ingredient-${testFilling._id}"]`;
+    const CONSTRUCTOR_SELECTOR = '[data-testid="burger-constructor"]';
+    const BUN_TOP_SELECTOR = '[data-testid="constructor-bun-top"]';
+    const BUN_BOTTOM_SELECTOR = '[data-testid="constructor-bun-bottom"]';
+    const FILLINGS_SELECTOR = '[data-testid="constructor-fillings"]';
+    const ORDER_TOTAL_SELECTOR = '[data-testid="order-total"]';
+
     beforeEach(() => {
         cy.intercept('GET', 'api/ingredients', {
             statusCode: 200,
@@ -39,45 +47,44 @@ describe('Drag and Drop Ingredients', () => {
                 data: [testBun, testFilling]
             }
         });
-
         cy.visit('/');
     });
 
     it('should drag bun to constructor', () => {
-        cy.get(`[data-testid="ingredient-${testBun._id}"]`).as('bun');
-        cy.get('[data-testid="burger-constructor"]').as('constructor');
+        cy.get(BUN_SELECTOR).as('bun');
+        cy.get(CONSTRUCTOR_SELECTOR).as('constructor');
 
         cy.get('@bun').trigger('dragstart');
         cy.get('@constructor').trigger('drop').trigger('dragend');
 
-        cy.get('[data-testid="constructor-bun-top"]').should('contain', testBun.name);
-        cy.get('[data-testid="constructor-bun-bottom"]').should('contain', testBun.name);
+        cy.get(BUN_TOP_SELECTOR).should('contain', testBun.name);
+        cy.get(BUN_BOTTOM_SELECTOR).should('contain', testBun.name);
 
         cy.get('@bun').should('contain', '2');
     });
 
     it('should drag filling to constructor', () => {
-        cy.get(`[data-testid="ingredient-${testFilling._id}"]`).as('filling');
-        cy.get('[data-testid="burger-constructor"]').as('constructor');
+        cy.get(FILLING_SELECTOR).as('filling');
+        cy.get(CONSTRUCTOR_SELECTOR).as('constructor');
 
         cy.get('@filling').trigger('dragstart');
         cy.get('@constructor').trigger('drop').trigger('dragend');
 
-        cy.get('[data-testid="constructor-fillings"]').should('contain', testFilling.name);
+        cy.get(FILLINGS_SELECTOR).should('contain', testFilling.name);
 
         cy.get('@filling').should('contain', '1');
     });
 
     it('should update total price after adding ingredients', () => {
-        cy.get(`[data-testid="ingredient-${testBun._id}"]`).trigger('dragstart');
-        cy.get('[data-testid="burger-constructor"]').trigger('drop').trigger('dragend');
+        cy.get(BUN_SELECTOR).trigger('dragstart');
+        cy.get(CONSTRUCTOR_SELECTOR).trigger('drop').trigger('dragend');
 
-        cy.get(`[data-testid="ingredient-${testFilling._id}"]`).trigger('dragstart');
-        cy.get('[data-testid="burger-constructor"]').trigger('drop').trigger('dragend');
+        cy.get(FILLING_SELECTOR).trigger('dragstart');
+        cy.get(CONSTRUCTOR_SELECTOR).trigger('drop').trigger('dragend');
 
         const expectedPrice = testBun.price * 2 + testFilling.price;
 
-        cy.get('[data-testid="order-total"]').should('contain', expectedPrice);
+        cy.get(ORDER_TOTAL_SELECTOR).should('contain', expectedPrice);
     });
 });
 
@@ -112,6 +119,10 @@ describe('Ingredient details Modal', () => {
         __v: 0
     };
 
+    const BUN_SELECTOR = `[data-testid="ingredient-${testBun._id}"]`;
+    const MODAL_SELECTOR = '[data-testid="modal"]';
+    const MODAL_CROSS_SELECTOR = '[data-testid="modal-cross"]';
+
     beforeEach(() => {
         cy.intercept('GET', 'api/ingredients', {
             statusCode: 200,
@@ -125,11 +136,11 @@ describe('Ingredient details Modal', () => {
     });
 
     it('should open Modal when click on ingredient', () => {
-        cy.get(`[data-testid="ingredient-${testBun._id}"]`).as('bun');
+        cy.get(BUN_SELECTOR).as('bun');
 
         cy.get('@bun').click();
 
-        cy.get('[data-testid="modal"]').as('modal');
+        cy.get(MODAL_SELECTOR).as('modal');
 
         cy.get('@modal').within(() => {
             cy.contains('Калории,ккал').siblings().should('contain', testBun.calories);
@@ -139,21 +150,20 @@ describe('Ingredient details Modal', () => {
         });
 
         cy.url().should('include', `/ingredients/${testBun._id}`);
-
     });
 
     it('should close Modal when click on cross', () => {
-        cy.get(`[data-testid="ingredient-${testBun._id}"]`).as('bun');
+        cy.get(BUN_SELECTOR).as('bun');
 
         cy.get('@bun').click();
 
-        cy.get('[data-testid="modal"]').as('modal');
+        cy.get(MODAL_SELECTOR).as('modal');
 
         cy.get('@modal').contains('Детали ингредиента');
 
-        cy.get('[data-testid="modal-cross"]').click();
+        cy.get(MODAL_CROSS_SELECTOR).click();
 
-        cy.get('[data-testid="modal"]').should('not.exist');
+        cy.get(MODAL_SELECTOR).should('not.exist');
     });
 });
 
@@ -180,6 +190,13 @@ describe('Order Placement Flow', () => {
         success: true
     };
 
+    const BUN_SELECTOR = `[data-testid="ingredient-${mockBun._id}"]`;
+    const FILLING_SELECTOR = `[data-testid="ingredient-${mockFilling._id}"]`;
+    const CONSTRUCTOR_SELECTOR = '[data-testid="burger-constructor"]';
+    const BUN_TOP_SELECTOR = '[data-testid="constructor-bun-top"]';
+    const FILLINGS_SELECTOR = '[data-testid="constructor-fillings"]';
+    const MODAL_SELECTOR = '[data-testid="modal"]';
+
     beforeEach(() => {
         cy.intercept('GET', 'api/ingredients', {
             body: { success: true, data: [mockBun, mockFilling] }
@@ -194,7 +211,6 @@ describe('Order Placement Flow', () => {
     });
 
     it('should display order modal after successful order placement', () => {
-
         const mockUser = {
             email: 'test@example.com',
             name: 'Test User'
@@ -215,28 +231,28 @@ describe('Order Placement Flow', () => {
         cy.get('button[type=submit]').click();
         cy.wait('@login');
 
-        cy.get(`[data-testid="ingredient-${mockBun._id}"]`).trigger('dragstart');
-        cy.get('[data-testid="burger-constructor"]').trigger('drop').trigger('dragend');
+        cy.get(BUN_SELECTOR).trigger('dragstart');
+        cy.get(CONSTRUCTOR_SELECTOR).trigger('drop').trigger('dragend');
 
-        cy.get(`[data-testid="ingredient-${mockFilling._id}"]`).trigger('dragstart');
-        cy.get('[data-testid="burger-constructor"]').trigger('drop').trigger('dragend');
+        cy.get(FILLING_SELECTOR).trigger('dragstart');
+        cy.get(CONSTRUCTOR_SELECTOR).trigger('drop').trigger('dragend');
 
         cy.get('button').contains('Оформить заказ').click();
 
         cy.wait('@postOrder');
 
-        cy.get('[data-testid="modal"]').should('be.visible');
+        cy.get(MODAL_SELECTOR).should('be.visible');
         cy.contains(`${mockOrderResponse.order.number}`).should('be.visible');
 
-        cy.get('[data-testid="constructor-bun-top"]').should('contain', 'Выберите булку');
-        cy.get('[data-testid="constructor-fillings"]').children().should('have.length', 0);
+        cy.get(BUN_TOP_SELECTOR).should('contain', 'Выберите булку');
+        cy.get(FILLINGS_SELECTOR).children().should('have.length', 0);
     });
 
     it('should redirect to login when unauthorized', () => {
         window.localStorage.removeItem('accessToken');
 
-        cy.get(`[data-testid="ingredient-${mockBun._id}"]`).trigger('dragstart');
-        cy.get('[data-testid="burger-constructor"]').trigger('drop').trigger('dragend');
+        cy.get(BUN_SELECTOR).trigger('dragstart');
+        cy.get(CONSTRUCTOR_SELECTOR).trigger('drop').trigger('dragend');
 
         cy.get('button').contains('Оформить заказ').click();
 

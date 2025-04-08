@@ -1,24 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { ingredientDetailsSlice, IIngredientDetailsSlice} from './ingredientDetailsSlice.ts';
+import { ingredientDetailsSlice } from './ingredientDetailsSlice.ts';
 import {IIngredient} from "../../../utils/types.ts";
 
 describe('ingredientDetailsSlice', () => {
-    const initialState: IIngredientDetailsSlice = {
-        current: {
-            _id: "",
-            name: "",
-            type: "",
-            proteins: 0,
-            fat: 0,
-            carbohydrates: 0,
-            calories: 0,
-            price: 0,
-            image: "",
-            image_mobile: "",
-            image_large: "",
-            __v: 0
-        }
-    };
+    const initialState = ingredientDetailsSlice.getInitialState();
 
     const mockIngredient: IIngredient = {
         _id: "ingredient-1",

@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
-    ingredientSlice,
+    ingredientsSlice,
     fetchIngredients,
-    IIngredientsSlice,
     IIngredientsResponse,
 } from './ingredientsSlice.ts';
 import { request } from '../request';
@@ -15,11 +14,7 @@ vi.mock('../request', () => ({
 const mockedRequest = vi.mocked(request);
 
 describe('ingredientSlice', () => {
-    const initialState: IIngredientsSlice = {
-        items: [],
-        status: "",
-        error: ""
-    };
+    const initialState = ingredientsSlice.getInitialState();
 
     const mockIngredient: IIngredient = {
         _id: '1',
@@ -39,7 +34,7 @@ describe('ingredientSlice', () => {
     describe('extraReducers', () => {
         it('should set status to "loading" when fetchIngredients is pending', () => {
             const action = { type: fetchIngredients.pending.type };
-            const state = ingredientSlice.reducer(initialState, action);
+            const state = ingredientsSlice.reducer(initialState, action);
 
             expect(state).toEqual({
                 items: [],
@@ -59,7 +54,7 @@ describe('ingredientSlice', () => {
                 payload: mockResponse
             };
 
-            const state = ingredientSlice.reducer(initialState, action);
+            const state = ingredientsSlice.reducer(initialState, action);
 
             expect(state).toEqual({
                 items: [mockIngredient],
@@ -75,7 +70,7 @@ describe('ingredientSlice', () => {
                 payload: errorMessage
             };
 
-            const state = ingredientSlice.reducer(initialState, action);
+            const state = ingredientsSlice.reducer(initialState, action);
 
             expect(state).toEqual({
                 items: [],

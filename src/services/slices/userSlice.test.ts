@@ -7,7 +7,7 @@ import {
     fetchForgotPassword,
     fetchResetPassword,
     fetchGetUser,
-    fetchPatchUser, IUserSlice
+    fetchPatchUser
 } from './userSlice';
 import {requestWithAuth} from "../request.ts";
 
@@ -18,16 +18,7 @@ vi.mock('../request', () => ({
 const mockedRequestWithAuth = vi.mocked(requestWithAuth);
 
 describe('userSlice', () => {
-    const initialState: IUserSlice = {
-        user: {
-            email: '',
-            name: ''
-        },
-        isResettingPassword: false,
-        isLoggedIn: false,
-        status: '',
-        error: ''
-    };
+    const initialState = userSlice.getInitialState();
 
     beforeEach(() => {
         vi.spyOn(Storage.prototype, 'setItem');

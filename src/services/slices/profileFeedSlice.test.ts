@@ -1,12 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { profileFeedSlice, IOrdersFeedSlice } from './profileFeedSlice.ts';
+import { profileFeedSlice } from './profileFeedSlice.ts';
 import { profileOnMessage } from '../actions';
 import {IOrder, IOrdersResponse} from "../../../utils/types.ts";
 
 describe('profileFeedSlice', () => {
-    const initialState: IOrdersFeedSlice = {
-        orders: []
-    };
+    const initialState = profileFeedSlice.getInitialState();
 
     const mockOrder1: IOrder = {
         _id: 'order1',
