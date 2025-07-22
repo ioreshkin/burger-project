@@ -1,8 +1,8 @@
-import {IIngredient} from "../../utils/types.ts";
+import {IIngredient} from "../../../utils/types.ts";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {request} from "./request.ts";
+import {request} from "../request.ts";
 
-interface IIngredientsResponse {
+export interface IIngredientsResponse {
     success: boolean;
     data: IIngredient[];
 }
@@ -18,7 +18,7 @@ export const fetchIngredients = createAsyncThunk<IIngredientsResponse>(
     }
 )
 
-interface IIngredientsSlice {
+export interface IIngredientsSlice {
     items: IIngredient[];
     status: string;
     error: string | unknown;
@@ -30,7 +30,7 @@ const initialState: IIngredientsSlice = {
     error: ""
 }
 
-export const ingredientSlice = createSlice({
+export const ingredientsSlice = createSlice({
     name: 'ingredients',
     initialState,
     reducers: {},

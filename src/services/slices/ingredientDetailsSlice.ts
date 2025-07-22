@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IIngredient} from "../../utils/types.ts";
+import {IIngredient} from "../../../utils/types.ts";
 
 
-interface IIngredientDetailsSlice {
+export interface IIngredientDetailsSlice {
     current: IIngredient;
 }
 

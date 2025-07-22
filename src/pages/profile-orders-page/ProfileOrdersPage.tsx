@@ -1,6 +1,6 @@
 import styles from "./profile-orders-page.module.css";
 import {useNavigate} from "react-router-dom";
-import {fetchLogout} from "../../services/userSlice.ts";
+import {fetchLogout} from "../../services/slices/userSlice.ts";
 import {useAppDispatch, useAppSelector} from "../../services/hooks.ts";
 import ProfileOrdersItem from "../../components/profile-orders-item/ProfileOrdersItem.tsx";
 import {useEffect} from "react";

@@ -1,7 +1,7 @@
 import {createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit";
-import {IIngredient, IConstructorIngredient} from "../../utils/types.ts";
+import {IIngredient, IConstructorIngredient} from "../../../utils/types.ts";
 
-interface IBurgerConstructorSlice {
+export interface IBurgerConstructorSlice {
     bun: IConstructorIngredient;
     filling: IConstructorIngredient[];
 }

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './login-page.module.css';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {fetchLogin} from "../../services/userSlice.ts";
+import {fetchLogin} from "../../services/slices/userSlice.ts";
 import {useAppDispatch} from "../../services/hooks.ts";
 
 const LoginPage = () => {

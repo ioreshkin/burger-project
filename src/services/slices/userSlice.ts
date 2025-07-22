@@ -1,8 +1,8 @@
-import {IUser} from "../../utils/types.ts";
+import {IUser} from "../../../utils/types.ts";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {request, requestWithAuth} from "./request.ts";
+import {request, requestWithAuth} from "../request.ts";
 
-interface IGetUserResponse {
+export interface IGetUserResponse {
     success: boolean,
     user: IUser
 }
@@ -16,7 +16,7 @@ interface ILoginRequest {
     password: string;
 }
 
-interface ILoginResponse {
+export interface ILoginResponse {
     success: boolean;
     user: IUser;
     accessToken: string;
@@ -148,7 +148,7 @@ export const fetchPatchUser = createAsyncThunk<IGetUserResponse, IPatchUserReque
     }
 );
 
-interface IUserSlice {
+export interface IUserSlice {
     user: IUser;
     isResettingPassword: boolean;
     isLoggedIn: boolean;
@@ -211,7 +211,6 @@ export const userSlice = createSlice({
                 localStorage.setItem('refreshToken', action.payload.refreshToken);
                 state.user = action.payload.user;
                 state.isLoggedIn = true
-
             })
             .addCase(fetchLogin.rejected, (state, action:PayloadAction<string | unknown>) => {
                 state.status = "failed";

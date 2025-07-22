@@ -37,13 +37,13 @@ const Modal = ({ children, onClose } : MyComponentProps) => {
         }
     }, []);
 
-    const handleClick = (e:React.SyntheticEvent<HTMLElement>) => {
-        if (!e.target.id) return;
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+        if (!(e.target instanceof HTMLElement)) return;
         if (e.target.id === 'modal-overlay') {
             onClose();
         }
         e.stopPropagation();
-    }
+    };
 
     if (!modalRoot) {
         return null;
@@ -52,10 +52,13 @@ const Modal = ({ children, onClose } : MyComponentProps) => {
     return ReactDOM.createPortal(
         (
             <ModalOverlay onClick={handleClick}>
-                <div className={styles.container}>
-                    <CloseIcon
-                        type="primary" className={`${styles.close} mt-15 mr-10`} onClick={onClose}
-                    />
+                <div className={styles.container} data-testid="modal">
+                    <div className={`${styles.close} mt-15 mr-10`} data-testid="modal-cross">
+                        <CloseIcon
+                            type="primary" onClick={onClose}
+                        />
+                    </div>
+
                     {children}
                 </div>
             </ModalOverlay>

@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {requestWithAuth} from "./request.ts";
+import {requestWithAuth} from "../request.ts";
 
-interface IOrderResponse {
+export interface IOrderResponse {
     name: string;
     order: {
         number: number;
@@ -9,11 +9,11 @@ interface IOrderResponse {
     success: boolean;
 }
 
-interface IOrder {
+export interface IOrder {
     ingredients: string[];
 }
 
-    export const fetchOrder = createAsyncThunk<IOrderResponse, IOrder>(
+export const fetchOrder = createAsyncThunk<IOrderResponse, IOrder>(
     "order/fetchOrder",
     async (data, { rejectWithValue }) => {
         try {
@@ -26,7 +26,7 @@ interface IOrder {
     }
 )
 
-interface IOrderSlice {
+export interface IOrderSlice {
     number: number;
     status: string;
     error: string | unknown;

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {IOrder, IOrdersRequest} from "../../utils/types.ts";
-import {feedOnMessage} from "./actions.ts";
+import {IOrder, IOrdersResponse} from "../../../utils/types.ts";
+import {feedOnMessage} from "../actions.ts";
 
-interface IOrdersFeedSlice {
+export interface IOrdersFeedSlice {
     orders: IOrder[];
     today: number;
     total: number;
@@ -20,7 +20,7 @@ export const ordersFeedSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(feedOnMessage, (state, action:PayloadAction<IOrdersRequest>) => {
+            .addCase(feedOnMessage, (state, action:PayloadAction<IOrdersResponse>) => {
                 state.orders = action.payload.orders;
                 state.today = action.payload.totalToday;
                 state.total = action.payload.total;

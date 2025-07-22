@@ -12,13 +12,17 @@ interface MyComponentProps {
     isPrivate: boolean;
 }
 
+interface IIngredientWithCount extends IIngredient {
+    count: number;
+}
+
 const OrderDetails = ({isPrivate}:MyComponentProps) => {
     const [ingredients, setIngredients] = useState<IIngredient[]>([]);
     const { items } = useAppSelector(state => state.ingredients);
 
     const {orderId} = useParams<{ orderId: string }>();
     const privateOrders = useAppSelector(state => state.ordersFeed.orders);
-    const allOrders = useAppSelector(state => state.ordersFeedAll.orders);
+    const allOrders = useAppSelector(state => state.profileFeed.orders);
     const [order, setOrder] = useState<IOrder | undefined>();
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const OrderDetails = ({isPrivate}:MyComponentProps) => {
 
     const processedIngredients = useMemo(() => {
         const counts: Record<string, number> = {};
-        const result = [];
+        const result:IIngredientWithCount[] = [];
         let lastIngredientId: string | null = null;
 
         const bun = ingredients.find(ing => ing.type === 'bun');

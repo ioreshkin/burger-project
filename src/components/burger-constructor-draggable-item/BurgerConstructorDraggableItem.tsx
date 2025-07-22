@@ -2,8 +2,9 @@ import {IConstructorIngredient} from "../../../utils/types.ts";
 import {useDrag, useDrop} from "react-dnd";
 import styles from "./burger-constructor-draggable-item.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {move, removeFilling} from "../../services/burgerConstructorSlice.ts";
+import {move, removeFilling} from "../../services/slices/burgerConstructorSlice.ts";
 import {useAppDispatch} from "../../services/hooks.ts";
+import {useEffect, useRef} from "react";
 
 interface MyComponentProps {
     ingredient: IConstructorIngredient;
@@ -13,6 +14,11 @@ interface MyComponentProps {
 const BurgerConstructorDraggableItem = ({ ingredient, index }: MyComponentProps) => {
 
     const dispatch = useAppDispatch();
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        drag(drop(ref));
+    }, );
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'constructorIngredient',
@@ -38,9 +44,10 @@ const BurgerConstructorDraggableItem = ({ ingredient, index }: MyComponentProps)
         dispatch(removeFilling(ingredient.key));
     }
 
+
     return (
         <div className={`${styles.container} ${isDragging ? styles.dragging : ""} ${isOver ? styles.highlight : ""} pb-4`}
-             key={ingredient.key} ref={(node) => drag(drop(node))}>
+             key={ingredient.key} ref={ref}>
             <DragIcon type="primary" className={styles.drag}/>
             <ConstructorElement
                 text={ingredient.name}
