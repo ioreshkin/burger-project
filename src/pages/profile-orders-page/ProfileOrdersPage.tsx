@@ -11,7 +11,7 @@ const ProfileOrdersPage = () => {
   const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.profileFeed);
   const token = localStorage.getItem('accessToken');
-  const URL = `wss://norma.nomoreparties.space/orders?token=${token}`;
+  const URL = `wss://norma.education-services.ru/orders?token=${token}`;
 
   useEffect(() => {
     dispatch(profileConnect(URL));

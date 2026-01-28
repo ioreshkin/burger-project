@@ -9,7 +9,7 @@ const FeedPage = () => {
   const [done, setDone] = useState<number[]>([]);
   const [pending, setPending] = useState<number[]>([]);
   const dispatch = useAppDispatch();
-  const URL = 'wss://norma.nomoreparties.space/orders/all';
+  const URL = 'wss://norma.education-services.ru/orders/all';
 
   useEffect(() => {
     dispatch(feedConnect(URL));

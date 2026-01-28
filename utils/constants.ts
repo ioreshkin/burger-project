@@ -1,1 +1,1 @@
-export const BASE_URL = "https://norma.nomoreparties.space/";
+export const BASE_URL = 'https://norma.education-services.ru/';
