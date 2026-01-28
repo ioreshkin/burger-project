@@ -23,7 +23,7 @@ export const fetchOrder = createAsyncThunk<IOrderResponse, IOrder>(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      }) as IOrderResponse;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }

@@ -152,7 +152,7 @@ export const fetchGetUser = createAsyncThunk<IGetUserResponse>(
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
         },
-      });
+      }) as IGetUserResponse;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -176,7 +176,7 @@ export const fetchPatchUser = createAsyncThunk<
         Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
       },
       body: JSON.stringify(reqData),
-    });
+    }) as IGetUserResponse;
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
